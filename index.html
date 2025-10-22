@@ -1,6 +1,36 @@
-<h1>hallo</h1>
-<p>this is a test page</p>
-<img src='https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQFz5fYgrepcP696Zm4ZtlldGLC6hEr83HUhDcUWJoyK2l-Rqp2YrkMskunDA_R5Hy-722xpQrOgG2-ZhAuOhuQ1aBRtwaf4jp3tfRNlNQKmg'>
-<button onclick='alert("hallo")'>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-</button>
+<!doctype html>
+<html dir="ltr" lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>New taby</title>
+    <style>
+      body {
+        background: #202020;
+        margin: 0;
+      }
+
+      #backgroundImage {
+        border: none;
+        height: 100%;
+        pointer-events: none;
+        position: fixed;
+        top: 0;
+        visibility: hidden;
+        width: 100%;
+      }
+
+      [show-background-image] #backgroundImage {
+        visibility: visible;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>new taby</h1>
+    <iframe id="backgroundImage" src=""></iframe>
+    <ntp-app></ntp-app>
+    <script type="module" src="new_tab_page.js"></script>
+    <link rel="stylesheet" href="chrome://resources/css/text_defaults_md.css">
+    <link rel="stylesheet" href="chrome://theme/colors.css?sets=ui,chrome">
+    <link rel="stylesheet" href="shared_vars.css">
+  </body>
+</html>
