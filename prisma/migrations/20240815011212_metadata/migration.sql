@@ -1,3 +1,0 @@
--- AlterTable
-ALTER TABLE "Site" ADD COLUMN     "icon" TEXT NOT NULL DEFAULT '',
-ADD COLUMN     "title" TEXT NOT NULL DEFAULT '';
