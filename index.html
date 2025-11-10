@@ -1,12 +1,74 @@
-<!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Search Bar</title>
-<link rel="stylesheet" href="style.css">
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&icon_names=search" />
+<title>Gess the number | Nicolas games</title>
+<style type="text/css">
+body{
+text-align:center;
+font-family:sans-serif;
+background-image: url('download (1).png');
+}
+button{
+padding:1em;
+border:0;
+width:100%;
+}
+table{
+border-spacing:0px;
+margin-left:auto;
+margin-right:auto;
+}
+h1{
+color:gold;
+}
+td{
+border:2px solid black;
+padding:0em;
+}
+div#notice{
+color:red;
+font-size:36pt;
+position:absolute;
+top:6cm;
+left:24cm;
+}
+</style>
 </head>
 <body>
+<h1>gess the noumber between 1-100</h1>
+<table>
+<tr><td>1<td>2<td>3<td>4<td>5<td>6<td>7<td>8<td>9<td>10
+<tr><td>1<td>2<td>3<td>4<td>5<td>6<td>7<td>8<td>9<td>10
+<tr><td>1<td>2<td>3<td>4<td>5<td>6<td>7<td>8<td>9<td>10
+<tr><td>1<td>2<td>3<td>4<td>5<td>6<td>7<td>8<td>9<td>10
+<tr><td>1<td>2<td>3<td>4<td>5<td>6<td>7<td>8<td>9<td>10
+<tr><td>1<td>2<td>3<td>4<td>5<td>6<td>7<td>8<td>9<td>10
+<tr><td>1<td>2<td>3<td>4<td>5<td>6<td>7<td>8<td>9<td>10
+<tr><td>1<td>2<td>3<td>4<td>5<td>6<td>7<td>8<td>9<td>10
+<tr><td>1<td>2<td>3<td>4<td>5<td>6<td>7<td>8<td>9<td>10
+<tr><td>1<td>2<td>3<td>4<td>5<td>6<td>7<td>8<td>9<td>10
+</table>
+<div id=notice></div>
+<script>
+let gess=Math.ceil(Math.random()*100)
+//nconsole.log('gess=',gess)
+let tds=document.getElementsByTagName('td')
+for(let i=0;i<tds.length;i+=1){
+	tds[i].innerHTML='<button onclick="check(this.innerText)">'+(i+1)+'</button>'
+}
+let notice=document.getElementById('notice')
+function check(number){
+	console.log(number)
+	if(number>gess)notice.innerText=('a bit too high')
+	if(number<gess)notice.innerText=('a bit too low')
+	if(number==gess){
+		notice.innerText=('great job!!!')
+		gess=Math.ceil(Math.random()*100)
+		//console.log('gess=',gess)
+	}
+}
+</script>
+<script>
+	if(gess==67)notice.innerText=('six seven!!!')
+</script>
 </body>
 </html>
