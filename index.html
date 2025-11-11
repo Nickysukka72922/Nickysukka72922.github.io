@@ -1,6 +1,13 @@
 <html>
 <head>
 <link rel="stylesheet" href="style.css">
+<audio id="74837443" src="your-sound-file.mp3" preload="auto"></audio>
+<script>
+function playSound() {
+  var sound = document.getElementById("74837443");
+  sound.play();
+}
+</script>
 <title>Guess the number | By Nicolas Games</title>
 </style>
 </head>
@@ -33,13 +40,11 @@ function check(number){
 	if(number<gess)notice.innerText=('a bit too low')
 	if(number==gess){
 		notice.innerText=('great job!!!')
+		playsound()
 		gess=Math.ceil(Math.random()*100)
 		//console.log('gess=',gess)
 	}
 }
-</script>
-<script>
-	if(gess==67)notice.innerText=('six seven!!!')
 </script>
 </body>
 </html>
