@@ -1,14 +1,8 @@
 <html>
 <head>
 <link rel="stylesheet" href="style.css">
-<audio id="01927528" src="happy-happy-happy-song.mp3" preload="auto"></audio>
-<script>
-function playSound() {
-  var sound = document.getElementById("01927528");
-  sound.play();
-}
-</script>
 <title>Guess the number | By Nicolas Games</title>
+</style>
 </head>
 <body>
 <h1>guess the number between 1-100</h1>
@@ -38,9 +32,11 @@ function check(number){
 	if(number>gess)notice.innerText=('a bit too high')
 	if(number<gess)notice.innerText=('a bit too low')
 	if(number==gess){
-		<button playsound()></button>
+		notice.innerText=('great job!!!')
 		gess=Math.ceil(Math.random()*100)
 		//console.log('gess=',gess)
+	}
+}
 </script>
 <script>
 	if(gess==67)notice.innerText=('six seven!!!')
