@@ -1,5 +1,44 @@
+<html>
 <head>
 <link rel="stylesheet" href="style.css">
 <title>Guess the number | By Nicolas Games</title>
 </head>
 <body>
+<h1>guess the number between 1-100</h1>
+<table>
+<tr><td>1<td>2<td>3<td>4<td>5<td>6<td>7<td>8<td>9<td>10
+<tr><td>1<td>2<td>3<td>4<td>5<td>6<td>7<td>8<td>9<td>10
+<tr><td>1<td>2<td>3<td>4<td>5<td>6<td>7<td>8<td>9<td>10
+<tr><td>1<td>2<td>3<td>4<td>5<td>6<td>7<td>8<td>9<td>10
+<tr><td>1<td>2<td>3<td>4<td>5<td>6<td>7<td>8<td>9<td>10
+<tr><td>1<td>2<td>3<td>4<td>5<td>6<td>7<td>8<td>9<td>10
+<tr><td>1<td>2<td>3<td>4<td>5<td>6<td>7<td>8<td>9<td>10
+<tr><td>1<td>2<td>3<td>4<td>5<td>6<td>7<td>8<td>9<td>10
+<tr><td>1<td>2<td>3<td>4<td>5<td>6<td>7<td>8<td>9<td>10
+<tr><td>1<td>2<td>3<td>4<td>5<td>6<td>7<td>8<td>9<td>10
+</table>
+<div id=notice></div>
+<script>
+let gess=Math.ceil(Math.random()*100)
+//nconsole.log('gess=',gess)
+let tds=document.getElementsByTagName('td')
+for(let i=0;i<tds.length;i+=1){
+	tds[i].innerHTML='<button onclick="check(this.innerText)">'+(i+1)+'</button>'
+}
+let notice=document.getElementById('notice')
+function check(number){
+	console.log(number)
+	if(number>gess)notice.innerText=('a bit too high')
+	if(number<gess)notice.innerText=('a bit too low')
+	if(number==gess){
+		notice.innerText=('great job!!!')
+		gess=Math.ceil(Math.random()*100)
+		//console.log('gess=',gess)
+	}
+}
+</script>
+<script>
+	if(gess==67)notice.innerText=('six seven!!!')
+</script>
+</body>
+</html>
