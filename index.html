@@ -40,7 +40,7 @@ function check(number){
 	if(number<gess)notice.innerText=('a bit too low')
 	if(number==gess){
 		notice.innerText=('great job!!!')
-		playsound()
+		playSound()
 		gess=Math.ceil(Math.random()*100)
 		//console.log('gess=',gess)
 	}
