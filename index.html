@@ -4,7 +4,7 @@
 <link rel="stylesheet" href="style.css">
 <audio id="74837443" src="happy-happy-happy-song.mp3" preload="auto"></audio>
 <script>
-function playSound() {
+function playSounddone() {
   var sound = document.getElementById("74837443");
   sound.play();
 }
@@ -41,7 +41,7 @@ function check(number){
 	if(number<gess)notice.innerText=('a bit too low')
 	if(number==gess){
 		notice.innerText=('great job!!!')
-		playSound()
+		playSounddone()
 		gess=Math.ceil(Math.random()*100)
 		//console.log('gess=',gess)
 	}
