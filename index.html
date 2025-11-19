@@ -8,12 +8,17 @@ function playSounddone() {
   var sound = document.getElementById("74837443");
   sound.play();
 }
+function mute()
+{
+document.getElementById("74837443").muted = true;
+}
 </script>
 <title>Guess the number | By Nicolas Games</title>
 </style>
 </head>
 <body>
 <h1>guess the number between 1-100</h1>
+<button onclick = "mute()">mute</button>
 <table>
 <tr><td>1<td>2<td>3<td>4<td>5<td>6<td>7<td>8<td>9<td>10
 <tr><td>1<td>2<td>3<td>4<td>5<td>6<td>7<td>8<td>9<td>10
