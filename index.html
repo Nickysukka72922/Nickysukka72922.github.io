@@ -10,7 +10,8 @@ function playSounddone() {
 }
 function mute()
 {
-document.getElementById("74837443").muted = true;
+var sound = document.getElementById("74837443")
+sound.muted = !sound.muted;
 }
 </script>
 <title>Guess the number | By Nicolas Games</title>
