@@ -10,6 +10,9 @@ padding:1em;
 border:0;
 width:100%;
 }
+#toggle{
+width:25%;
+}
 table{
 border-spacing:0px;
 margin-left:auto;
