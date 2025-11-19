@@ -10,8 +10,6 @@ padding:1em;
 border:0;
 width:100%;
 }
-#toggle{
-width:25%;
 }
 table{
 border-spacing:0px;
@@ -69,10 +67,8 @@ background-image: url('data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wCEAA
 button{
 padding:1em;
 border:0;
-width:25%;
+width:100%;
 }
-#toggle{
-width:25%;
 }
 table{
 border-spacing:0px;
