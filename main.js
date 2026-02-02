@@ -12,6 +12,8 @@ function check(number){
 	if(number==gess){
 		notice.innerText=('great job!!!')
 		playSounddone()
+		setTimeout(1000)
+		notice.innerText=('')
 		gess=Math.ceil(Math.random()*100)
 		//console.log('gess=',gess)
 	}
