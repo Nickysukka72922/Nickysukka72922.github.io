@@ -16,18 +16,7 @@ body, html {
     justify-content: center; 
     
     /* 3. Center the text vertically along the cross axis */
-    align-items: center; 
-    
-    /* Optional: other styling for visibility */
-    background-color: #f0f0f0;
-    font-family: sans-serif;
-    border: 2px solid #333;
-}
-
-/* Optional: styling the text itself */
-.center-container p {
-    text-align: center;
-    padding: 20px;
+    align-items: center;
 }
 body{
 text-align:center;
