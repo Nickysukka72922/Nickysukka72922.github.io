@@ -1,22 +1,4 @@
-body, html {
-    /* Ensure the body and html elements take up the full screen height */
-    height: 100%;
-    margin: 0; /* Remove default body margin */
-    overflow: hidden; /* Optional: hides scroll bars if only centering one element */
-}
 
-.center-container {
-    /* Make the container fill the screen's viewport height */
-    height: 100vh; 
-    
-    /* 1. Activate Flexbox on the container */
-    display: flex; 
-    
-    /* 2. Center the text horizontally along the main axis */
-    justify-content: center; 
-    
-    /* 3. Center the text vertically along the cross axis */
-    align-items: center;
 }
 body{
 text-align:center;
