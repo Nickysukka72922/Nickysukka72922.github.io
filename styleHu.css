@@ -4,10 +4,6 @@ body{
 text-align:center;
 font-family:sans-serif;
 background-image: url("cat.svg");
-background-repeat: no-repeat;
-background-size: cover;
-background-position: center;
-background-color: #0000ff;
 padding:1em;
 border:0;
 width:100%;
