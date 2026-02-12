@@ -1,9 +1,8 @@
-
-}
 body{
 text-align:center;
 font-family:sans-serif;
 background-image: url("cat.svg");
+button{
 padding:1em;
 border:0;
 width:100%;
