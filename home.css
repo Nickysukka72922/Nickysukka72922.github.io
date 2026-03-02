@@ -1,0 +1,15 @@
+.placeholder{
+    width:25vw;
+    padding:2%;
+    border-radius:30%;
+    height:36vh;
+}
+body{
+    background-color:rgb(150, 0, 255)
+}
+.img{
+    width:20vw;
+    padding:4%;
+    border-radius:30%;
+    height:34vh;
+}
