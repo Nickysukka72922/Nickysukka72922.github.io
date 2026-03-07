@@ -1,6 +1,6 @@
 {
-  "name": "Guess The Number Pro",
-  "short_name": "GuessNumber",
+  "name": "Guess The Number",
+  "short_name": "GuesstheNumber",
   "start_url": "index.html",
   "display": "standalone",
   "background_color": "#0F172A",
@@ -9,12 +9,12 @@
     {
       "src": "favicon.svg",
       "sizes": "150x150",
-      "type": "image/svg"
+      "type": "image/svg+xml"
     },
     {
       "src": "favicon.svg",
       "sizes": "150x150",
-      "type": "image/png"
+      "type": "image/svg+xml"
     }
   ]
 }
