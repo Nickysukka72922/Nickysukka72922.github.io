@@ -11,6 +11,7 @@ const ASSETS = [
   './favicon.svg'
   './website.png',
   './cat.svg',
+  './happy-happy-happy-song.mp3',
 ];
 
 // 1. Install: The Service Worker saves your files to the cache
