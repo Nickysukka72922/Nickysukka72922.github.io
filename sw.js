@@ -9,11 +9,7 @@ const ASSETS = [
   './main.js',
   './manifest.json',
   './favicon.svg'
-  './hu.html',
-  './mainHu.js',
-  './manifestHu.json',
   './website.png',
-  './styleHu.css',
   './cat.svg',
 ];
 
