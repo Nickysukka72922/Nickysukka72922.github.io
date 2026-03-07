@@ -14,24 +14,11 @@ const ASSETS = [
 ];
 
 // 1. Install: The Service Worker saves your files to the cache
-self.addEventListener('fetch', (event) => {
-  event.respondWith(
-    caches.match(event.request).then((cachedResponse) => {
-      // 1. If we have it in cache, return it
-      if (cachedResponse) return cachedResponse;
-
-      // 2. Otherwise, fetch it
-      return fetch(event.request).then((networkResponse) => {
-        // 3. Only cache successful responses (status 200)
-        // This avoids caching partial 206 responses
-        if (networkResponse.status === 200) {
-          const responseToCache = networkResponse.clone();
-          caches.open(CACHE_NAME).then((cache) => {
-            cache.put(event.request, responseToCache);
-          });
-        }
-        return networkResponse;
-      });
+self.addEventListener('install', (event) => {
+  event.waitUntil(
+    caches.open(CACHE_NAME).then((cache) => {
+      console.log('Opened cache');
+      return cache.addAll(ASSETS);
     })
   );
 });
@@ -55,9 +42,22 @@ self.addEventListener('activate', (event) => {
 // 3. Fetch: The "Brain" that serves files from the cache
 self.addEventListener('fetch', (event) => {
   event.respondWith(
-    caches.match(event.request).then((response) => {
-      // Return cached version or fetch from internet if not found
-      return response || fetch(event.request);
+    caches.match(event.request).then((cachedResponse) => {
+      // 1. If we have it in cache, return it
+      if (cachedResponse) return cachedResponse;
+
+      // 2. Otherwise, fetch it
+      return fetch(event.request).then((networkResponse) => {
+        // 3. Only cache successful responses (status 200)
+        // This avoids caching partial 206 responses
+        if (networkResponse.status === 200) {
+          const responseToCache = networkResponse.clone();
+          caches.open(CACHE_NAME).then((cache) => {
+            cache.put(event.request, responseToCache);
+          });
+        }
+        return networkResponse;
+      });
     })
   );
 });
