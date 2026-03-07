@@ -38,6 +38,10 @@ window.addEventListener('appinstalled', () => {
   installBtn.style.display = 'none';
   console.log('PWA was installed');
 });
+if ('serviceWorker' in navigator) {
+  navigator.serviceWorker.register('/sw.js')
+    .then(() => console.log("Service Worker Registered! App is ready for offline use."));
+}
 </script>
 <script>
 function playSounddone() {
