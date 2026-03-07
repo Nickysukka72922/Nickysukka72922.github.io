@@ -1,26 +1,19 @@
-const cacheName = 'guess-v1';
-const assets = [
-  '/',
-  '/index.html',
-  '/style.css',
-  '/main.js',
-  '/favicon.svg'
-];
+let deferredPrompt;
 
-// Install the service worker and cache the game code
-self.addEventListener('install', e => {
-  e.waitUntil(
-    caches.open(cacheName).then(cache => {
-      cache.addAll(assets);
-    })
-  );
+// 1. Capture the event
+window.addEventListener('beforeinstallprompt', (e) => {
+  e.preventDefault();
+  deferredPrompt = e;
+  // Don't hide the button yet! Just save the event.
+  document.getElementById('installBtn').style.display = 'block';
 });
 
-// Fetch the game from the cache if offline
-self.addEventListener('fetch', e => {
-  e.respondWith(
-    caches.match(e.request).then(response => {
-      return response || fetch(e.request);
-    })
-  );
-});
+// 2. You can now call this function from a menu or a link whenever you want!
+function triggerInstall() {
+  if (deferredPrompt) {
+    deferredPrompt.prompt();
+    deferredPrompt = null;
+  } else {
+    alert("This app is already installed or your browser doesn't support it yet!");
+  }
+}
