@@ -8,7 +8,7 @@ const ASSETS = [
   './style.css',
   './main.js',
   './manifest.json',
-  './favicon.svg'
+  './favicon.svg',
   './cat.svg',
   './happy-happy-happy-song.mp3',
 ];
