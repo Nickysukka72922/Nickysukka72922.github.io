@@ -9,7 +9,6 @@ const ASSETS = [
   './main.js',
   './manifest.json',
   './favicon.svg'
-  './website.png',
   './cat.svg',
   './happy-happy-happy-song.mp3',
 ];
