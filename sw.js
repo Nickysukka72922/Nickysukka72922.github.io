@@ -3,8 +3,8 @@ const assets = [
   '/',
   '/index.html',
   '/style.css',
-  '/script.js',
-  '/icon-512.png'
+  '/main.js',
+  '/favicon.svg'
 ];
 
 // Install the service worker and cache the game code
