@@ -14,6 +14,7 @@ const ASSETS = [
   './manifestHu.json',
   './website.png',
   './styleHu.css',
+  './cat.svg',
 ];
 
 // 1. Install: The Service Worker saves your files to the cache
