@@ -1,1 +1,20 @@
-
+{
+  "name": "Találd ki a számot",
+  "short_name": "Találdkiaszámot",
+  "start_url": "index.html",
+  "display": "standalone",
+  "background_color": "#0F172A",
+  "theme_color": "#22C55E",
+  "icons": [
+    {
+      "src": "favicon.svg",
+      "sizes": "150x150",
+      "type": "image/svg+xml"
+    },
+    {
+      "src": "favicon.svg",
+      "sizes": "150x150",
+      "type": "image/svg+xml"
+    }
+  ]
+}
