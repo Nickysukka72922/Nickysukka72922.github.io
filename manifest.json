@@ -3,7 +3,7 @@
   "short_name": "GuesstheNumber",
   "start_url": "index.html",
   "display": "standalone",
-  "background_color": "#0F172A",
+  "background_color": "#a30000",
   "theme_color": "#22C55E",
   "icons": [
     {
