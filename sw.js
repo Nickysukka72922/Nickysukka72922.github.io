@@ -39,25 +39,15 @@ self.addEventListener('activate', (event) => {
   );
 });
 
-// 3. Fetch: The "Brain" that serves files from the cache
 self.addEventListener('fetch', (event) => {
-  event.respondWith(
-    caches.match(event.request).then((cachedResponse) => {
-      // 1. If we have it in cache, return it
-      if (cachedResponse) return cachedResponse;
+  // If the request is for the music, ignore it and let the network handle it
+  if (event.request.url.includes('.mp3')) {
+    return; 
+  }
 
-      // 2. Otherwise, fetch it
-      return fetch(event.request).then((networkResponse) => {
-        // 3. Only cache successful responses (status 200)
-        // This avoids caching partial 206 responses
-        if (networkResponse.status === 200) {
-          const responseToCache = networkResponse.clone();
-          caches.open(CACHE_NAME).then((cache) => {
-            cache.put(event.request, responseToCache);
-          });
-        }
-        return networkResponse;
-      });
+  event.respondWith(
+    caches.match(event.request).then((response) => {
+      return response || fetch(event.request);
     })
   );
 });
