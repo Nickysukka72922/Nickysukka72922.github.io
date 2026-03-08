@@ -15,6 +15,7 @@ const ASSETS = [
 
 // 1. Install: The Service Worker saves your files to the cache
 self.addEventListener('install', (event) => {
+  self.skipWaiting();
   event.waitUntil(
     caches.open(CACHE_NAME).then((cache) => {
       console.log('Opened cache');
