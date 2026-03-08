@@ -17,20 +17,20 @@
       "type": "image/png"
     }
   ],
-"screenshots": [
-  {
-    "src": "websiteformanefest.png",
-    "sizes": "1280x720",
-    "type": "image/png",
-    "form_factor": "wide",
-    "label": "Guess The Number on Desktop"
-  },
-  {
-    "src": "websiteformanefest2.png",
-    "sizes": "720x1280",
-    "type": "image/png",
-    "form_factor": "narrow",
-    "label": "Guess The Number on Mobile"
-  }
-]
+  "screenshots": [
+    {
+      "src": "websiteformanefest.png",
+      "sizes": "1280x720",
+      "type": "image/png",
+      "form_factor": "wide",
+      "label": "Guess The Number on Desktop"
+    },
+    {
+      "src": "websiteformanefest2.png",
+      "sizes": "720x1280",
+      "type": "image/png",
+      "form_factor": "narrow",
+      "label": "Guess The Number on Mobile"
+    }
+  ]
 }
