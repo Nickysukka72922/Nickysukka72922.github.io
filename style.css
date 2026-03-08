@@ -40,7 +40,11 @@ left:24cm;
   font-size: 16px;          /* Proper text size */
   margin: 10px 0;           /* Space around the button */
 }
-
 #installBtn:hover {
   background-color: #ab0000; /* Slightly darker blue on hover */
+}
+mute {
+padding: 10px 20px;
+width: auto;
+max-width: 250px;
 }
