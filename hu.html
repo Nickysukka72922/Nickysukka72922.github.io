@@ -7,15 +7,6 @@
 <link rel="stylesheet" href="styleHu.css">
 <audio id="74837443" src="happy-happy-happy-song.mp3" preload="auto"></audio>
 <script>
-if ('serviceWorker' in navigator) {
-  window.addEventListener('load', () => {
-    navigator.serviceWorker.register('/sw.js')
-      .then(() => console.log('Service Worker registered successfully!'))
-      .catch((err) => console.log('Service Worker registration failed: ', err));
-  });
-}
-</script>
-<script>
 function playSounddone() {
   var sound = document.getElementById("74837443");
   sound.play();
@@ -33,10 +24,8 @@ sound.muted = !sound.muted;
 <div class="center-container">
   <p>text</p>
 </div>
-<h1>
-tippeld meg a számot 1 és 100 között</h1>
+<h1>tippeld meg a számot 1 és 100 között</h1>
 <button onclick = "mute()">váltás befejező hang</button>
-<button id="installBtn" style="display: none; background: #3B82F6;">📥 Telepítés a kezdőképernyőre</button>
 <table>
 <tr><td>1<td>2<td>3<td>4<td>5<td>6<td>7<td>8<td>9<td>10
 <tr><td>1<td>2<td>3<td>4<td>5<td>6<td>7<td>8<td>9<td>10
