@@ -1,3 +1,4 @@
+let deferredPrompt;
 let gess=Math.ceil(Math.random()*100)
 //nconsole.log('gess=',gess)
 let tds=document.getElementsByTagName('td')
@@ -16,7 +17,6 @@ function check(number){
 		//console.log('gess=',gess)
 	}
 }
-let deferredPrompt;
 const installBtn = document.getElementById('installBtn');
 
 // Change 'block' to 'inline-block'
