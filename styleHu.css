@@ -27,3 +27,8 @@ position:absolute;
 top:6cm;
 left:24cm;
 }
+mute {
+padding: 10px 20px;
+width: auto;
+max-width: 250px;
+}
