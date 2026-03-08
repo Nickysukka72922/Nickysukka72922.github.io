@@ -44,6 +44,7 @@ left:24cm;
   background-color: #ab0000; /* Slightly darker blue on hover */
 }
 mute {
+border-radius: 8px;
 padding: 10px 20px;
 width: auto;
 max-width: 250px;
