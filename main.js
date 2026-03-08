@@ -19,6 +19,9 @@ function check(number){
 let deferredPrompt;
 const installBtn = document.getElementById('installBtn');
 
+// Change 'block' to 'inline-block'
+installBtn.style.display = 'inline-block';
+
 window.addEventListener('beforeinstallprompt', (e) => {
   // 1. Prevent the mini-infobar from appearing on mobile
   e.preventDefault();
