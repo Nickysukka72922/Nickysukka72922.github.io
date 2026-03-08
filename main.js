@@ -58,3 +58,8 @@ if ('serviceWorker' in navigator) {
     });
   });
 }
+// In main.js
+navigator.serviceWorker.addEventListener('controllerchange', () => {
+  // This fires when the new Service Worker takes over
+  window.location.reload(); 
+});
