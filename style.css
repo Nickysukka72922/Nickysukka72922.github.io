@@ -30,7 +30,7 @@ left:24cm;
 #installBtn {
   display: none; /* Keep it hidden until JS shows it */
   padding: 10px 20px;       /* Adds space inside the button */
-  background-color: #3B82F6; /* Your blue color */
+  background-color: #e60000; /* Your blue color */
   color: white;             /* White text */
   border: none;             /* Remove border */
   border-radius: 8px;       /* Rounded corners */
