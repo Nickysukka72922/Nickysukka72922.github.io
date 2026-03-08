@@ -29,7 +29,9 @@ left:24cm;
 }
 #installBtn {
   display: none; /* Keep it hidden until JS shows it */
-  padding: 10px 20px;       /* Adds space inside the button */
+  padding: 10px 20px;       /* Top/Bottom 10px, Left/Right 20px */
+  width: auto;              /* Prevents it from filling the full width */
+  max-width: 250px;       /* Adds space inside the button */
   background-color: #e60000; /* Your blue color */
   color: white;             /* White text */
   border: none;             /* Remove border */
