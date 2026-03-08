@@ -27,3 +27,18 @@ position:absolute;
 top:6cm;
 left:24cm;
 }
+#installBtn {
+  display: none; /* Keep it hidden until JS shows it */
+  padding: 10px 20px;       /* Adds space inside the button */
+  background-color: #3B82F6; /* Your blue color */
+  color: white;             /* White text */
+  border: none;             /* Remove border */
+  border-radius: 8px;       /* Rounded corners */
+  cursor: pointer;          /* Hand icon when hovering */
+  font-size: 16px;          /* Proper text size */
+  margin: 10px 0;           /* Space around the button */
+}
+
+#installBtn:hover {
+  background-color: #2563EB; /* Slightly darker blue on hover */
+}
