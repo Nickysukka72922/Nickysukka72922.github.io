@@ -43,3 +43,18 @@ window.addEventListener('beforeinstallprompt', (e) => {
     });
   });
 });
+// Check for updates every time the page loads
+if ('serviceWorker' in navigator) {
+  navigator.serviceWorker.register('/sw.js').then((reg) => {
+    reg.addEventListener('updatefound', () => {
+      const newWorker = reg.installing;
+      newWorker.addEventListener('statechange', () => {
+        // If the new worker is installed, reload to apply the update
+        if (newWorker.state === 'installed' && navigator.serviceWorker.controller) {
+          console.log('New version found! Reloading...');
+          window.location.reload();
+        }
+      });
+    });
+  });
+}
