@@ -1,5 +1,5 @@
 // Versioning: Change this number whenever you update your game files
-const CACHE_NAME = 'guess-the-number-v22.4';
+const CACHE_NAME = 'guess-the-number-v22.6';
 
 // List every file you want to be available offline
 const ASSETS = [
