@@ -58,8 +58,12 @@ if ('serviceWorker' in navigator) {
     });
   });
 }
-// In main.js
 navigator.serviceWorker.addEventListener('controllerchange', () => {
-  // This fires when the new Service Worker takes over
-  window.location.reload(); 
+  // Show the message
+  document.getElementById('update-message').style.display = 'block';
+
+  // Wait a tiny bit so they can see the message, then refresh
+  setTimeout(() => {
+    window.location.reload();
+  }, 1500); // 1.5 seconds delay
 });
