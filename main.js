@@ -20,6 +20,8 @@ function check(number){
 const installBtn = document.getElementById('installBtn');
 
 window.addEventListener('beforeinstallprompt', (e) => {
+   // Change 'block' to 'inline-block'
+   installBtn.style.display = 'inline-block';
   // 1. Prevent the mini-infobar from appearing on mobile
   e.preventDefault();
   // 2. Stash the event so it can be triggered later.
