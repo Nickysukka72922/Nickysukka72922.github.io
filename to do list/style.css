@@ -1,1 +1,40 @@
 
+.tasks {
+  float: left;
+  width: 49%;
+  margin: 1%;
+  border-radius: 25%;
+}
+.checkbox-round {
+  width: 1.7rem;
+  height: 1.7rem;
+  border-radius: 50%; /* Makes it round */
+  vertical-align: middle;
+  border: 0.1rem solid #000;
+  appearance: none; /* Removes default browser styling */
+  -webkit-appearance: none; /* For Safari and older browsers */
+  outline: none;
+  cursor: pointer;
+}
+
+.checkbox-round:checked {
+  background-color: rgb(255, 0, 0); /* Change background when checked */
+}
+.hidden {
+    display: none;
+}
+.show {
+  display: block;
+}
+#task-container {
+    position: top;
+    width: 100%;
+}
+.addtask {
+  border-radius: 25%;
+  background-color: rgb(0, 255, 0);
+}
+.deletetask {
+  border-radius: 25%;
+  background-color: rgb(255, 0, 0);
+}
