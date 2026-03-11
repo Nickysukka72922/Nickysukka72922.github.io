@@ -1,0 +1,25 @@
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, inital-scale=1.0">
+    <title>To do list</title>
+    <link rel="stylesheet" href="style.css">
+  </head>
+  <body id="body">
+    <h1>My to do list</h1>
+    <div id="task-container">
+</div>
+<p id="save-status">Last saved: <span id="timestamp">Never</span></p>
+<div id="buttons">
+    <button class="addtask" onclick="addtask()">Add</button>
+    <button class="deletetask" onclick="deleteTask()">Delete</button>
+    <button class="deletetask" onclick="clearTask()">Clear</button>
+</div>
+    <div id="task" class="hidden">
+            <input type="checkbox" name="Done" value="yes" class="checkbox-round">
+      <input name="task" type="text" class="tasks" placeholder="enter a task">
+    </div>
+  </body>
+</html>
