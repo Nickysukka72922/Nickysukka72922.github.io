@@ -34,14 +34,14 @@
 .addtask {
   border-radius: 25%;
   background-color: rgb(0, 255, 0);
-  cursor: pointer;
+  cursor: context-menu;
 }
 .deletetask {
   border-radius: 25%;
   background-color: rgb(255, 0, 0);
-  cursor: pointer;
+  cursor: context-menu;
 }
 #save-status {
-  positon: left;
+  position: left;
   cursor: context-menu;
 }
