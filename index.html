@@ -34,6 +34,13 @@ function getmode() {
   return myMode;
 }
 var mode = getmode()
+if (mode === "desktop") {
+console.log("Running in Desktop mode.");
+} else if (mode === "mobile") {
+console.log("Running in Mobile mode.");
+} else {
+console.log("No specific mode selected, Running default settings.");
+}
 </script>
 <title>Guess the number | By Nicolas Games</title>
 </head>
