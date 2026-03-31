@@ -34,10 +34,13 @@ function getmode() {
   return myMode;
 }
 var mode = getmode()
+var pwaBTN = get Element.By.Id()
 if (mode === "desktop") {
 console.log("Running in Desktop mode.");
+pwaBTN.style.display = "hidden";
 } else if (mode === "mobile") {
 console.log("Running in Mobile mode.");
+pwaBTN.style.display = "hidden";
 } else {
 console.log("No specific mode selected, Running default settings.");
 }
