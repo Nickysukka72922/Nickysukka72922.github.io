@@ -27,6 +27,12 @@ var sound = document.getElementById("74837443")
 sound.muted = !sound.muted;
 }
 </script>
+<script>
+Function getmode()
+  const urlParams = new URLSearchParams(window.location.search);
+  const myMode = urlParams.get('mode'); 
+  return myMode; 
+</script>
 <title>Guess the number | By Nicolas Games</title>
 </head>
 <body>
