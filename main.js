@@ -44,7 +44,7 @@ window.addEventListener('beforeinstallprompt', (e) => {
   const urlParams = new URLSearchParams(window.location.search);
   const mode = urlParams.get('mode');
   
-  if (mode !== "desktop"  && mode !== 'mobile' ) {
+  if (mode !== "desktop" && mode !== 'mobile' ) {
     installBtn.style.display = 'inline-block';
   }
 });
