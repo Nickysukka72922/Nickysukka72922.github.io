@@ -67,27 +67,6 @@
   <script src="main.js"></script>
 
   <script>
-    function applyResponsiveStyles() {
-    const width = window.innerWidth;
-    const container = document.querySelector(".container");
-    const boxes = document.querySelectorAll(".box");
-
-    if (width <= 600) {
-        // Mobile view
-        //container.style.flexDirection = "column";
-        boxes.forEach(box => {
-            box.style.fontSize = "16px";
-            box.style.background = "lightcoral";
-        });
-    } else if (width <= 900) {
-        // Tablet view
-        //container.style.flexDirection = "row";
-        boxes.forEach(box => {
-            box.style.fontSize = "18px";
-            box.style.background = "lightgreen";
-        });
-    }
-
     function getmode() {
       const urlParams = new URLSearchParams(window.location.search);
       return urlParams.get('mode'); 
@@ -105,8 +84,7 @@
       } else if (mode === "mobile") {
         console.log("Running in Mobile mode.");
         pwaBTN.style.display = "none";
-        applyResponsiveStyles();
-        window.addEventListener("resize", applyResponsiveStyles);
+        console.log("test with mobile!")
       } else {
         console.log("No specific mode selected. Running default settings.");
         // web config
