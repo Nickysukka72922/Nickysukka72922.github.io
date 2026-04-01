@@ -79,15 +79,15 @@
       
       if (mode === "desktop") {
         console.log("Running in Desktop mode.");
-        pwaBTN.style.display = "none"; // Hides the button only on desktop
-        
+        pwaBTN.style.display = "none";
+        // desktop config
       } else if (mode === "mobile") {
         console.log("Running in Mobile mode.");
-        // Button stays visible
-        
+        pwaBTN.style.display = "none";
+        // mobile config
       } else {
         console.log("No specific mode selected. Running default settings.");
-        // Button stays visible
+        // web config
       }
 
     });
