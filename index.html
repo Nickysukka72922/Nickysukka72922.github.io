@@ -56,6 +56,7 @@ function getmode() {
 }
 var mode = getmode()
 var pwaBTN = document.getElementById("installBtn");
+window.addEventListener('load', () => {
 if (mode === "desktop") {
 console.log("Running in Desktop mode.");
 pwaBTN.style.display = "hidden";
@@ -64,7 +65,7 @@ console.log("Running in Mobile mode.");
 pwaBTN.style.display = "hidden";
 } else {
 console.log("No specific mode selected, Running default settings.");
-}
+}}
 </script>
 </body>
 </html>
