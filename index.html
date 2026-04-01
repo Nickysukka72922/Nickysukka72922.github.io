@@ -14,16 +14,6 @@
   <audio id="74837443" src="happy-happy-happy-song.mp3" preload="auto"></audio>
 
   <script>
-    if ('serviceWorker' in navigator) {
-      window.addEventListener('load', () => {
-        navigator.serviceWorker.register('/sw.js')
-          .then(() => console.log('Service Worker registered successfully!'))
-          .catch((err) => console.log('Service Worker registration failed: ', err));
-      });
-    }
-  </script>
-
-  <script>
     function playSounddone() {
       var sound = document.getElementById("74837443");
       sound.play().catch(error => {
