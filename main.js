@@ -1,41 +1,62 @@
 let deferredPrompt;
-let gess=Math.ceil(Math.random()*100)
-//nconsole.log('gess=',gess)
-let tds=document.getElementsByTagName('td')
-for(let i=0;i<tds.length;i+=1){
-	tds[i].innerHTML='<button onclick="check(this.innerText)">'+(i+1)+'</button>'
+// Generate initial random number
+let gess = Math.ceil(Math.random() * 100);
+
+// Set up the grid buttons
+let tds = document.getElementsByTagName('td');
+for (let i = 0; i < tds.length; i += 1) {
+  tds[i].innerHTML = '<button onclick="check(this.innerText)">' + (i + 1) + '</button>';
 }
-let notice=document.getElementById('notice')
-function check(number){
-	console.log(number)
-	if(number>gess)notice.innerText=('a bit too high')
-	if(number<gess)notice.innerText=('a bit too low')
-	if(number==gess){
-		notice.innerText=('great job!!!')
-		playSounddone()
-		gess=Math.ceil(Math.random()*100)
-		//console.log('gess=',gess)
-	}
-} 
+
+let notice = document.getElementById('notice');
+
+// Make check globally available so the HTML inline onclick can see it
+window.check = function(number) {
+  let guessNum = parseInt(number);
+  console.log("Guessed:", guessNum);
+
+  if (guessNum > gess) {
+    notice.innerText = 'a bit too high';
+  } else if (guessNum < gess) {
+    notice.innerText = 'a bit too low';
+  } else if (guessNum === gess) {
+    notice.innerText = 'great job!!!';
+    
+    // Play sound if available
+    if (typeof playSounddone === 'function') {
+      playSounddone();
+    }
+    
+    // Reset the game with a new number
+    gess = Math.ceil(Math.random() * 100);
+  }
+};
+
+// PWA Install Logic
 const installBtn = document.getElementById('installBtn');
 
 window.addEventListener('beforeinstallprompt', (e) => {
   e.preventDefault();
-  deferredPrompt = e; // The browser finally "plugs in" the event
-  console.log("✅ Event captured! The button is now 'active'.");
-  installBtn.style.display = 'inline-block';
+  deferredPrompt = e; 
+  console.log("✅ Event captured! The button is now active.");
+  
+  // Only show the button if NOT in desktop mode
+  const urlParams = new URLSearchParams(window.location.search);
+  const mode = urlParams.get('mode');
+  
+  if (mode !== "desktop") {
+    installBtn.style.display = 'inline-block';
+  }
 });
 
 installBtn.addEventListener('click', () => {
   if (!deferredPrompt) {
-    console.error("❌ Error: The 'deferredPrompt' is empty. The browser hasn't given the signal yet.");
+    console.error("❌ Error: The 'deferredPrompt' is empty.");
     return;
   }
 
-  // Trigger the prompt
   deferredPrompt.prompt();
 
-  // Wait for the user to respond to the prompt
   deferredPrompt.userChoice.then((choiceResult) => {
     if (choiceResult.outcome === 'accepted') {
       console.log('User accepted the install');
