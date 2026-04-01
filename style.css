@@ -1,51 +1,64 @@
-body{
-text-align:center;
-font-family:sans-serif;
-background-image: url("cat.svg");
-button{
-padding:1em;
-border:0;
-width:100%;
+body {
+  text-align: center;
+  font-family: sans-serif;
+  background-image: url("cat.svg");
 }
+
+/* Fixed the broken nesting */
+button {
+  padding: 1em;
+  border: 0;
+  width: 100%;
 }
-table{
-border-spacing:0px;
-margin-left:auto;
-margin-right:auto;
+
+table {
+  border-spacing: 0px;
+  margin-left: auto;
+  margin-right: auto;
 }
-h1{
-color:gold;
+
+h1 {
+  color: gold;
 }
-td{
-border:2px solid black;
-padding:0em;
+
+td {
+  border: 2px solid black;
+  padding: 0em;
 }
-div#notice{
-color:red;
-font-size:36pt;
-position:absolute;
-top:6cm;
-left:24cm;
+
+/* Fixed positioning so it doesn't vanish on small screens */
+div#notice {
+  color: red;
+  font-size: 36pt;
+  margin-top: 20px;
+  font-weight: bold;
 }
+
 #installBtn {
   display: none; /* Keep it hidden until JS shows it */
-  padding: 10px 20px;       /* Top/Bottom 10px, Left/Right 20px */
-  width: auto;              /* Prevents it from filling the full width */
-  max-width: 250px;       /* Adds space inside the button */
-  background-color: #e60000; /* Your blue color */
-  color: white;             /* White text */
-  border: none;             /* Remove border */
-  border-radius: 8px;       /* Rounded corners */
-  cursor: pointer;          /* Hand icon when hovering */
-  font-size: 16px;          /* Proper text size */
-  margin: 10px 0;           /* Space around the button */
+  padding: 10px 20px;
+  width: auto;
+  max-width: 250px;
+  background-color: #e60000;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 16px;
+  margin: 10px auto;
 }
+
 #installBtn:hover {
-  background-color: #ab0000; /* Slightly darker blue on hover */
+  background-color: #ab0000;
 }
-mute {
-border-radius: 8px;
-padding: 10px 20px;
-width: auto;
-max-width: 250px;
+
+/* Fixed: Added # to target the ID "mute" */
+#mute {
+  border-radius: 8px;
+  padding: 10px 20px;
+  width: auto;
+  max-width: 250px;
+  background-color: #3B82F6;
+  color: white;
+  cursor: pointer;
 }
