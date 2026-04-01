@@ -38,7 +38,7 @@ const installBtn = document.getElementById('installBtn');
 window.addEventListener('beforeinstallprompt', (e) => {
   e.preventDefault();
   deferredPrompt = e; 
-  console.log("✅ Event captured! The button is now active.");
+  console.log("Event captured! The button is now active.");
   
   // Only show the button if NOT in desktop mode
   const urlParams = new URLSearchParams(window.location.search);
@@ -51,7 +51,7 @@ window.addEventListener('beforeinstallprompt', (e) => {
 
 installBtn.addEventListener('click', () => {
   if (!deferredPrompt) {
-    console.error("❌ Error: The 'deferredPrompt' is empty.");
+    console.error("Error: The 'deferredPrompt' is empty.");
     return;
   }
 
