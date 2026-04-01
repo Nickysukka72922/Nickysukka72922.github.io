@@ -1,71 +1,89 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta name="theme-color" content="#470000">
-<meta name="google-site-verification" content="X13tP7dEeiJjXmASSJzZD5nM_rilWnGwudpnKVB2oB4" />
-<link rel="manifest" href="manifest.json">
-<link rel="icon" type="image/svg+xml" href="favicon.svg" />
-<link rel="stylesheet" href="style.css">
-<audio id="74837443" src="happy-happy-happy-song.mp3" preload="auto"></audio>
-<script>
-if ('serviceWorker' in navigator) {
-  window.addEventListener('load', () => {
-    navigator.serviceWorker.register('/sw.js')
-      .then(() => console.log('Service Worker registered successfully!'))
-      .catch((err) => console.log('Service Worker registration failed: ', err));
-  });
-}
-</script>
-<script>
-function playSounddone() {
-  var sound = document.getElementById("74837443");
-  sound.play();
-}
-function mute()
-{
-var sound = document.getElementById("74837443")
-sound.muted = !sound.muted;
-}
-</script>
-<title>Guess the number | By Nicolas Games</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#470000">
+  <meta name="google-site-verification" content="X13tP7dEeiJjXmASSJzZD5nM_rilWnGwudpnKVB2oB4" />
+  <link rel="manifest" href="manifest.json">
+  <link rel="icon" type="image/svg+xml" href="favicon.svg" />
+  <link rel="stylesheet" href="style.css">
+  
+  <title>Guess the number | By Nicolas Games</title>
+
+  <audio id="74837443" src="happy-happy-happy-song.mp3" preload="auto"></audio>
+
+  <script>
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', () => {
+        navigator.serviceWorker.register('/sw.js')
+          .then(() => console.log('Service Worker registered successfully!'))
+          .catch((err) => console.log('Service Worker registration failed: ', err));
+      });
+    }
+  </script>
+
+  <script>
+    function playSounddone() {
+      var sound = document.getElementById("74837443");
+      sound.play().catch(error => {
+        console.log("Audio autoplay was prevented. Interaction required first.");
+      });
+    }
+
+    function mute() {
+      var sound = document.getElementById("74837443");
+      sound.muted = !sound.muted;
+    }
+  </script>
 </head>
 <body>
-<h1>guess the number between 1-100</h1>
-<button id="mute" onclick = "mute()">toggle finish sound</button>
-<button id="installBtn" style="display: none; background: #3B82F6;">📥 Install to Home Screen</button>
-<div id="update-message" style="display:none; position:fixed; top:20px; right:20px; background:#22C55E; color:white; padding:10px; border-radius:5px; z-index:9999;">Updating to latest version...</div>
-<table>
-<tr><td>1<td>2<td>3<td>4<td>5<td>6<td>7<td>8<td>9<td>10
-<tr><td>1<td>2<td>3<td>4<td>5<td>6<td>7<td>8<td>9<td>10
-<tr><td>1<td>2<td>3<td>4<td>5<td>6<td>7<td>8<td>9<td>10
-<tr><td>1<td>2<td>3<td>4<td>5<td>6<td>7<td>8<td>9<td>10
-<tr><td>1<td>2<td>3<td>4<td>5<td>6<td>7<td>8<td>9<td>10
-<tr><td>1<td>2<td>3<td>4<td>5<td>6<td>7<td>8<td>9<td>10
-<tr><td>1<td>2<td>3<td>4<td>5<td>6<td>7<td>8<td>9<td>10
-<tr><td>1<td>2<td>3<td>4<td>5<td>6<td>7<td>8<td>9<td>10
-<tr><td>1<td>2<td>3<td>4<td>5<td>6<td>7<td>8<td>9<td>10
-<tr><td>1<td>2<td>3<td>4<td>5<td>6<td>7<td>8<td>9<td>10
-</table>
-<div id=notice></div>
-<script src="main.js"></script>
-<script>
-function getmode() {
-  const urlParams = new URLSearchParams(window.location.search);
-  const myMode = urlParams.get('mode'); 
-  return myMode;
-}
-var mode = getmode()
-var pwaBTN = document.getElementById("installBtn");
-window.addEventListener('load', () => {
-if (mode === "desktop") {
-console.log("Running in Desktop mode.");
-pwaBTN.style.display = "hidden";
-} else if (mode === "mobile") {
-console.log("Running in Mobile mode.");
-pwaBTN.style.display = "hidden";
-} else {
-console.log("No specific mode selected, Running default settings.");
-}})
-</script>
+
+  <h1>Guess the number between 1-100</h1>
+  
+  <button id="mute" onclick="mute()">Toggle finish sound</button>
+  <button id="installBtn" style="display: none; background: #3B82F6;">📥 Install to Home Screen</button>
+  
+  <div id="update-message" style="display:none; position:fixed; top:20px; right:20px; background:#22C55E; color:white; padding:10px; border-radius:5px; z-index:9999;">
+    Updating to latest version...
+  </div>
+
+  <table>
+    <tr><td>1</td><td>2</td><td>3</td><td>4</td><td>5</td><td>6</td><td>7</td><td>8</td><td>9</td><td>10</td></tr>
+    <tr><td>11</td><td>12</td><td>13</td><td>14</td><td>15</td><td>16</td><td>17</td><td>18</td><td>19</td><td>20</td></tr>
+    <tr><td>21</td><td>22</td><td>23</td><td>24</td><td>25</td><td>26</td><td>27</td><td>28</td><td>29</td><td>30</td></tr>
+    <tr><td>31</td><td>32</td><td>33</td><td>34</td><td>35</td><td>36</td><td>37</td><td>38</td><td>39</td><td>40</td></tr>
+    <tr><td>41</td><td>42</td><td>43</td><td>44</td><td>45</td><td>46</td><td>47</td><td>48</td><td>49</td><td>50</td></tr>
+    <tr><td>51</td><td>52</td><td>53</td><td>54</td><td>55</td><td>56</td><td>57</td><td>58</td><td>59</td><td>60</td></tr>
+    <tr><td>61</td><td>62</td><td>63</td><td>64</td><td>65</td><td>66</td><td>67</td><td>68</td><td>69</td><td>70</td></tr>
+    <tr><td>71</td><td>72</td><td>73</td><td>74</td><td>75</td><td>76</td><td>77</td><td>78</td><td>79</td><td>80</td></tr>
+    <tr><td>81</td><td>82</td><td>83</td><td>84</td><td>85</td><td>86</td><td>87</td><td>88</td><td>89</td><td>90</td></tr>
+    <tr><td>91</td><td>92</td><td>93</td><td>94</td><td>95</td><td>96</td><td>97</td><td>98</td><td>99</td><td>100</td></tr>
+  </table>
+
+  <div id="notice"></div>
+
+  <script src="main.js"></script>
+
+  <script>
+    function getmode() {
+      const urlParams = new URLSearchParams(window.location.search);
+      return urlParams.get('mode'); 
+    }
+
+    var mode = getmode();
+    var pwaBTN = document.getElementById("installBtn");
+
+    window.addEventListener('load', () => {
+      if (mode === "desktop" || mode === "mobile") {
+        console.log(`Running in ${mode} mode.`);
+        pwaBTN.style.display = "none"; // Fixed: changed from "hidden" to "none"
+      } else {
+        console.log("No specific mode selected. Running default settings.");
+        // If you want the install button to show by default, uncomment the line below:
+        // pwaBTN.style.display = "block";
+      }
+    });
+  </script>
 </body>
 </html>
