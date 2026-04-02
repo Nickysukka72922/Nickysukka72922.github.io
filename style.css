@@ -4,12 +4,12 @@ body {
   background-image: url("cat.svg");
 }
 
-/* Fixed the broken nesting */
-button {
+/* button {
   padding: 1em;
   border: 0;
   width: 100%;
 }
+*/
 
 table {
   border-spacing: 0px;
