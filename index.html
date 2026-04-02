@@ -61,6 +61,25 @@
     </a>
 </footer>
 
+<script>
+  document.getElementById('installBtn').addEventListener('click', function() {
+    const ua = window.navigator.userAgent.toLowerCase();
+    let fileUrl = "";
+
+    if (ua.includes("win")) {
+      // Windows installer
+//      fileUrl = "downloads/app-setup.exe";
+    } else if (ua.includes("android")) {
+      // Android APK
+      fileUrl = "downloads/app.apk";
+    } else {
+      alert("Please visit our download page on a Windows or Android device.");
+      return;
+    }
+
+    window.location.assign(fileUrl);
+  });
+</script>
   <script>
     function getmode() {
       const urlParams = new URLSearchParams(window.location.search);
