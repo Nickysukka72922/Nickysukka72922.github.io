@@ -35,7 +35,7 @@ div#notice {
 }
 
 #installBtn {
-  display: none; /* Keep it hidden until JS shows it */
+  display: inline-block; /* Keep it hidden until JS shows it */
   padding: 10px 20px;
   width: auto;
   max-width: 250px;
