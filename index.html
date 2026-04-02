@@ -56,11 +56,18 @@
 
   <script src="main.js"></script>
 <footer>
-    <a href="https://Nickysukka72922.github.io/Message.html" target="_self" class="footer-button">
+    <a href="https://Nickysukka72922.github.io/Message.html" target="_self" id=messageBtn class="footer-button">
         <img src="back btn.png">
     </a>
 </footer>
-
+<script>
+window.addEventListener("pageshow", function () {
+    const btn = document.getElementById("messageBtn");
+    if (btn) {
+        btn.style.display = "block";
+    }
+});
+</script>
 <script>
   document.getElementById('installBtn').addEventListener('click', function() {
     const ua = window.navigator.userAgent.toLowerCase();
