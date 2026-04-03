@@ -27,7 +27,7 @@ td button {
 
 /* Adds a nice color change when you hover over a square */
 td button:hover {
-transform: scale(1.1);
+transform: scale(1.05);
 }
 
 body {
