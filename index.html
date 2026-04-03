@@ -125,27 +125,21 @@ window.addEventListener("pageshow", function () {
     window.location.assign(fileUrl);
   });
 </script>
-  <script>
-    function getmode() {
-      const urlParams = new URLSearchParams(window.location.search);
-      return urlParams.get('mode'); 
-    }
-
-    var mode = getmode();
+<script>
+    // Grabbing the 'installBtn' from the HTML
     var pwaBTN = document.getElementById("installBtn");
 
     window.addEventListener('load', () => {
       
+      // We are using the 'mode' variable created in main.js here!
       if (mode === "desktop") {
         console.log("Running in Desktop mode.");
-        pwaBTN.style.display = "hidden";
-        // desktop config
+        pwaBTN.style.display = "none"; 
       } else if (mode === "mobile") {
         console.log("Running in Mobile mode.");
-        pwaBTN.style.display = "hidden";
+        pwaBTN.style.display = "none"; 
       } else {
         console.log("No specific mode selected. Running default settings.");
-        // web config
       }
 
     });
