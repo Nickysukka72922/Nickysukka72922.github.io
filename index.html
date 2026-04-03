@@ -55,6 +55,44 @@
   <div id="notice"></div>
 
   <script src="main.js"></script>
+  
+  <style>
+  .floating-back-btn {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            z-index: 100; /* Keeps it on top of other elements */
+        }
+
+        .floating-back-btn img {
+            width: 60px;                  
+            height: 60px;
+            border-radius: 50%; /* Makes it a circle */          
+            border: 3px solid white;      
+            box-shadow: 0 4px 8px rgba(0,0,0,0.3); 
+            background-color: white; /* Makes sure the icon is visible */
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+            cursor: pointer;              
+        }
+
+        /* Hover effect */
+        .floating-back-btn img:hover {
+            transform: scale(1.1); /* Slight zoom on hover */        
+            box-shadow: 0 6px 12px rgba(0,0,0,0.4); 
+        }
+
+        /* Mobile responsive shrinking */
+        @media (max-width: 480px) {
+            .floating-back-btn {
+                top: 10px;
+                left: 10px;
+            }
+            .floating-back-btn img {
+                width: 45px;
+                height: 45px;
+            }
+        }
+  </style>
 
     <a href="https://gamez.ct.ws" target="_self" class="floating-back-btn">
         <img src="https://Nickysukka72922.github.io/back btn.png" alt="Back">
