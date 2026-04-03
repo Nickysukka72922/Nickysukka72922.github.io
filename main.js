@@ -31,4 +31,4 @@ window.check = function(number) {
   if (mode !== "desktop" && mode !== 'mobile' ) {
     installBtn.style.display = 'inline-block';
   }
-);
+;
