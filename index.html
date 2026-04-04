@@ -111,25 +111,22 @@ window.addEventListener("pageshow", function () {
     const ua = window.navigator.userAgent.toLowerCase();
     let fileUrl = "";
 
-    // 1. GET THE USER'S IP
+    // 1. GET THE USER'S PUBLIC IP
     try {
-      // Added '?format=json' so the browser can read the response correctly
-      const response = await fetch('https://api.ipify.org?format=json');
+      const response = await fetch('https://ipify.org');
       const data = await response.json();
       const userIP = data.ip;
 
-      // 2. CHECK IF IT MATCHES YOUR SCHOOL'S IP RANGE
-      // Replace "123.45.67." with your school's actual IP prefix
-      const schoolIPPrefix = "123.45.67."; 
+      // 2. BLOCK NSW DET PUBLIC IP RANGE
+      // Most DET NSW schools use IPs starting with 153.107.
+      const nswDetPrefix = "153.107."; 
 
-      if (userIP.startsWith(schoolIPPrefix)) {
-        alert("This download is blocked on school computers.");
-        return; // Stops the code immediately
+      if (userIP.startsWith(nswDetPrefix)) {
+        alert("This download is restricted on the NSW Department of Education network. (It would be to chaotic if every one went on the site at the same time!!!)");
+        return; // Stops the download
       }
     } catch (error) {
-      // If the IP check fails (like if the school blocks ipify), 
-      // it will just log the error and let the download proceed.
-      console.log("IP check failed, continuing with download.", error);
+      console.log("Network check failed...");
     }
 
     // 3. YOUR ORIGINAL OS DETECTION
@@ -138,7 +135,7 @@ window.addEventListener("pageshow", function () {
     } else if (ua.includes("android")) {
       fileUrl = "app.apk";
     } else {
-      alert("Sorry we only have support for windows and android devices (Sorry for Alice ): )");
+      alert("Sorry, I only have support for Windows and Android devices (Sorry for Alice!!)");
       return;
     }
 
