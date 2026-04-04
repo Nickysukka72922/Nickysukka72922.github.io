@@ -111,22 +111,25 @@ window.addEventListener("pageshow", function () {
     const ua = window.navigator.userAgent.toLowerCase();
     let fileUrl = "";
 
-    // 1. GET THE USER'S IP (This part is new)
+    // 1. GET THE USER'S IP
     try {
-      const response = await fetch('https://ipify.org');
+      // Added '?format=json' so the browser can read the response correctly
+      const response = await fetch('https://api.ipify.org?format=json');
       const data = await response.json();
       const userIP = data.ip;
 
-      // 2. CHECK IF IT MATCHES YOUR SCHOOL'S IP
-      // Replace "0.0.0.0" with the actual IP you find at school
-      const schoolIP = "0.0.0.0"; 
+      // 2. CHECK IF IT MATCHES YOUR SCHOOL'S IP RANGE
+      // Replace "123.45.67." with your school's actual IP prefix
+      const schoolIPPrefix = "123.45.67."; 
 
-      if (userIP === schoolIP) {
+      if (userIP.startsWith(schoolIPPrefix)) {
         alert("This download is blocked on school computers.");
-        return; // Stops the rest of the code from running
+        return; // Stops the code immediately
       }
     } catch (error) {
-      console.log("IP check failed, continuing with download.");
+      // If the IP check fails (like if the school blocks ipify), 
+      // it will just log the error and let the download proceed.
+      console.log("IP check failed, continuing with download.", error);
     }
 
     // 3. YOUR ORIGINAL OS DETECTION
