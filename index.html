@@ -107,18 +107,35 @@ window.addEventListener("pageshow", function () {
 });
 </script>
 <script>
-  document.getElementById('installBtn').addEventListener('click', function() {
+  document.getElementById('installBtn').addEventListener('click', async function() {
     const ua = window.navigator.userAgent.toLowerCase();
     let fileUrl = "";
 
+    // 1. GET THE USER'S IP (This part is new)
+    try {
+      const response = await fetch('https://ipify.org');
+      const data = await response.json();
+      const userIP = data.ip;
+
+      // 2. CHECK IF IT MATCHES YOUR SCHOOL'S IP
+      // Replace "0.0.0.0" with the actual IP you find at school
+      const schoolIP = "0.0.0.0"; 
+
+      if (userIP === schoolIP) {
+        alert("This download is blocked on school computers.");
+        return; // Stops the rest of the code from running
+      }
+    } catch (error) {
+      console.log("IP check failed, continuing with download.");
+    }
+
+    // 3. YOUR ORIGINAL OS DETECTION
     if (ua.includes("win")) {
-      // Windows installer
       fileUrl = "Guessthenumber.exe";
     } else if (ua.includes("android")) {
-      // Android APK
       fileUrl = "app.apk";
     } else {
-      alert("Please visit our download page on a Windows or Android device.");
+      alert("Sorry we only have support for windows and android devices (Sorry for Alice ): )");
       return;
     }
 
