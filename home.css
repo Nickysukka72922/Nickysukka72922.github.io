@@ -5,13 +5,6 @@ body {
   padding: 0;
 }
 
-.placeholder {
-  width: 25vw;
-  height: 36vh;
-  padding: 2%;
-  border-radius: 30%;
-  box-sizing: border-box; /* Keeps padding from breaking your sizing */
-}
 
 .img {
   width: 20vw;
