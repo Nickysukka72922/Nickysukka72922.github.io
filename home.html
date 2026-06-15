@@ -1,36 +1,108 @@
+<!DOCTYPE html>
 <html>
-    <head>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="theme-color" content="#470000">
     <link rel="icon" type="image/svg+xml" href="favicon.svg" />
     <link rel="stylesheet" href="home.css">
-    </head>
-    <body>
-<a href="https://Nickysukka72922.github.io">
-    <img class=img src="https://nickysukka72922.github.io/website.png"
-</a>
-<a href="https://Nickysukka72922.github.io/to do list/">
-    <img class=img src="https://nickysukka72922.github.io/todolist800x800.png"
-</a>
-<a href="https://nickysukka72922.github.io/scratch-gui/index.html">
-    <img class=placeholder src="https://www.svgrepo.com/show/508699/landscape-placeholder.svg"
-</a>
-<a href="https://nickysukka72922.github.io/physics">
-    <img class=placeholder src="https://www.svgrepo.com/show/508699/landscape-placeholder.svg"
-</a>
-<a href="https://nickysukka72922.github.io/3d">
-    <img class=placeholder src="https://www.svgrepo.com/show/508699/landscape-placeholder.svg"
-</a>
-<a href="https://nickysukka72922.github.io/game">
-    <img class=placeholder src="https://www.svgrepo.com/show/508699/landscape-placeholder.svg"
-</a>
-<a href="https://www.example.com">
-    <img class=placeholder src="https://www.svgrepo.com/show/508699/landscape-placeholder.svg"
-</a>
-<a href="https://www.example.com">
-    <img class=placeholder src="https://www.svgrepo.com/show/508699/landscape-placeholder.svg"
-</a>
-<a href="https://www.example.com">
-    <img class=placeholder src="https://www.svgrepo.com/show/508699/landscape-placeholder.svg"
-</a>
-    </body>
+    <title>My Projects</title>
+</head>
+<body>
+
+    <!-- 1. Search Bar Interface -->
+    <div class="search-container">
+        <input type="text" id="searchInput" placeholder="Search projects...">
+        <ul id="searchResults"></ul>
+    </div>
+
+    <!-- 2. Your Project Grid (With Corrected Image Brackets) -->
+    <div class="project-grid">
+        <a href="https://Nickysukka72922.github.io">
+            <img class="img" src="https://nickysukka72922.github.io/website.png">
+        </a>
+        <a href="https://Nickysukka72922.github.io/to do list/">
+            <img class="img" src="https://nickysukka72922.github.io/todolist800x800.png">
+        </a>
+        <a href="https://nickysukka72922.github.io/scratch-gui/index.html">
+            <img class="placeholder" src="https://www.svgrepo.com/show/508699/landscape-placeholder.svg">
+        </a>
+        <a href="https://nickysukka72922.github.io/physics">
+            <img class="placeholder" src="https://www.svgrepo.com/show/508699/landscape-placeholder.svg">
+        </a>
+        <a href="https://nickysukka72922.github.io/3d">
+            <img class="placeholder" src="https://www.svgrepo.com/show/508699/landscape-placeholder.svg">
+        </a>
+        <a href="https://nickysukka72922.github.io/game">
+            <img class="placeholder" src="https://www.svgrepo.com/show/508699/landscape-placeholder.svg">
+        </a>
+        <a href="https://www.example.com">
+            <img class="placeholder" src="https://www.svgrepo.com/show/508699/landscape-placeholder.svg">
+        </a>
+        <a href="https://www.example.com">
+            <img class="placeholder" src="https://www.svgrepo.com/show/508699/landscape-placeholder.svg">
+        </a>
+        <a href="https://www.example.com">
+            <img class="placeholder" src="https://www.svgrepo.com/show/508699/landscape-placeholder.svg">
+        </a>
+    </div>
+
+    <!-- 3. Project Search Logic -->
+    <script>
+        // Data index maps directly to your links and keywords
+        const projects = [
+            { name: "Home / Main Website", url: "https://Nickysukka72922.github.io", tags: "home main landing nickysukka" },
+            { name: "To Do List", url: "https://Nickysukka72922.github.io/to do list/", tags: "todo list task planner checklist" },
+            { name: "Scratch GUI", url: "https://nickysukka72922.github.io/scratch-gui/index.html", tags: "scratch gui coding blocks game programming" },
+            { name: "Physics Engine", url: "https://nickysukka72922.github.io/physics", tags: "physics gravity simulation math science" },
+            { name: "3D Graphics", url: "https://nickysukka72922.github.io/3d", tags: "3d threejs render modeling cubes spatial" },
+            { name: "Games", url: "https://nickysukka72922.github.io/game", tags: "game play arcade fun interactive" }
+        ];
+
+        const searchInput = document.getElementById('searchInput');
+        const searchResults = document.getElementById('searchResults');
+
+        searchInput.addEventListener('input', (e) => {
+            const query = e.target.value.toLowerCase().trim();
+            searchResults.innerHTML = '';
+
+            if (query === '') {
+                searchResults.style.display = 'none';
+                return;
+            }
+
+            // Matches your search against the project name or hidden tags
+            const matched = projects.filter(p => 
+                p.name.toLowerCase().includes(query) || 
+                p.tags.toLowerCase().includes(query)
+            );
+
+            if (matched.length > 0) {
+                searchResults.style.display = 'block';
+                matched.forEach(p => {
+                    const li = document.createElement('li');
+                    const a = document.createElement('a');
+                    a.href = p.url;
+                    a.textContent = p.name;
+                    li.appendChild(a);
+                    searchResults.appendChild(li);
+                });
+            } else {
+                searchResults.style.display = 'block';
+                const li = document.createElement('li');
+                li.textContent = "No projects found";
+                li.className = "no-results";
+                searchResults.appendChild(li);
+            }
+        });
+
+        // Hides dropdown if you click anywhere else on the page
+        document.addEventListener('click', (e) => {
+            if (!e.target.closest('.search-container')) {
+                searchResults.innerHTML = '';
+                searchResults.style.display = 'none';
+            }
+        });
+    </script>
+</body>
 </html>

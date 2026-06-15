@@ -1,15 +1,84 @@
-.placeholder{
-    width:25vw;
-    padding:2%;
-    border-radius:30%;
-    height:36vh;
+/* --- Your Original Page Styles --- */
+body {
+  background-color: rgb(150, 0, 255);
+  margin: 0;
+  padding: 0;
 }
-body{
-    background-color:rgb(150, 0, 255)
+
+.placeholder {
+  width: 25vw;
+  height: 36vh;
+  padding: 2%;
+  border-radius: 30%;
+  box-sizing: border-box; /* Keeps padding from breaking your sizing */
 }
-.img{
-    width:20vw;
-    padding:4%;
-    border-radius:30%;
-    height:34vh;
+
+.img {
+  width: 20vw;
+  height: 34vh;
+  padding: 4%;
+  border-radius: 30%;
+  box-sizing: border-box; /* Keeps padding from breaking your sizing */
+}
+
+/* --- Integrated Search Bar Styles --- */
+.search-container {
+  position: relative;
+  width: 90%;
+  max-width: 500px;
+  margin: 30px auto;
+  font-family: sans-serif;
+}
+
+#searchInput {
+  width: 100%;
+  padding: 12px 20px;
+  font-size: 16px;
+  border: 2px solid #470000; /* Dark red outline to match your theme meta tag */
+  border-radius: 25px;
+  outline: none;
+  box-sizing: border-box;
+  background-color: #ffffff;
+}
+
+/* Floating drop-down search results list */
+#searchResults {
+  position: absolute;
+  top: 105%;
+  left: 0;
+  right: 0;
+  background: #ffffff;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  max-height: 250px;
+  overflow-y: auto;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+  z-index: 999;
+  display: none;
+}
+
+#searchResults li {
+  border-bottom: 1px solid #eee;
+}
+
+#searchResults li a {
+  display: block;
+  padding: 12px 20px;
+  text-decoration: none;
+  color: #333;
+  font-weight: 500;
+}
+
+#searchResults li a:hover {
+  background-color: #f4eeee;
+  color: #470000;
+}
+
+#searchResults li.no-results {
+  padding: 12px 20px;
+  color: #777;
+  font-style: italic;
 }
