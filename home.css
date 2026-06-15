@@ -5,13 +5,24 @@ body {
   padding: 0;
 }
 
-
+/* --- New Fully Responsive & Square Image Styles --- */
 .img {
-  width: 20vw;
-  height: 34vh;
-  padding: 4%;
-  border-radius: 30%;
-  box-sizing: border-box; /* Keeps padding from breaking your sizing */
+  width: 22vw;                /* Fluid width based on screen size */
+  aspect-ratio: 1 / 1;        /* Forces a perfect 1:1 square ratio */
+  padding: 2%;                /* Even spacing around the images */
+  border-radius: 30%;         /* Keeps your custom rounded corners */
+  box-sizing: border-box;     /* Prevents padding from breaking layout dimensions */
+  object-fit: contain;        /* Ensures the actual image inside doesn't stretch */
+  display: inline-block;      /* Keeps images wrapping neatly side-by-side */
+  vertical-align: middle;
+}
+
+/* --- Mobile Responsiveness --- */
+@media (max-width: 768px) {
+  .placeholder, .img {
+    width: 45vw;              /* Makes images larger on smaller mobile screens */
+    padding: 3%;              /* Gives slightly more spacing on mobile phones */
+  }
 }
 
 /* --- Integrated Search Bar Styles --- */
@@ -27,7 +38,7 @@ body {
   width: 100%;
   padding: 12px 20px;
   font-size: 16px;
-  border: 2px solid #470000; /* Dark red outline to match your theme meta tag */
+  border: 2px solid #470000;
   border-radius: 25px;
   outline: none;
   box-sizing: border-box;
@@ -75,3 +86,4 @@ body {
   color: #777;
   font-style: italic;
 }
+
