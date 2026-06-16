@@ -1,0 +1,97 @@
+<div class="contact-container">
+    <h2>Submit a Project Idea</h2>
+    
+    <form action="https://formspree.io" method="POST">
+        
+        <!-- Optional: Tells Formspree to make the email subject line match this title -->
+        <input type="hidden" name="_subject" value="New Website Project Idea Submission!">
+        
+        <div class="form-group">
+            <label for="name">Your Name / Alias:</label>
+            <input type="text" id="name" name="name" required placeholder="Nicky (or leave anonymous)">
+        </div>
+        
+        <div class="form-group">
+            <label for="email">Your Email Address:</label>
+            <input type="email" id="email" name="email" required placeholder="your.email@example.com">
+        </div>
+        
+        <div class="form-group">
+            <label for="idea-title">Project Title / Theme:</label>
+            <input type="text" id="idea-title" name="idea_title" required placeholder="e.g., Multiplayer Game, Calculator...">
+        </div>
+        
+        <div class="form-group">
+            <label for="message">Describe Your Idea:</label>
+            <textarea id="message" name="idea_description" rows="5" required placeholder="Explain what features or tools this project should have..."></textarea>
+        </div>
+        
+        <button type="submit">Submit Idea</button>
+    </form>
+</div>
+<style>
+/* --- Simple Contact Form Style --- */
+.contact-container {
+  width: 90%;
+  max-width: 500px;
+  margin: 40px auto;
+  background: #ffffff;
+  padding: 30px;
+  border-radius: 15px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+  font-family: sans-serif;
+}
+
+.contact-container h2 {
+  color: #470000; /* Dark red header to match theme */
+  margin-top: 0;
+  text-align: center;
+}
+
+.form-group {
+  margin-bottom: 20px;
+}
+
+.form-group label {
+  display: block;
+  font-weight: bold;
+  margin-bottom: 8px;
+  color: #333;
+}
+
+.form-group input, 
+.form-group textarea {
+  width: 100%;
+  padding: 12px;
+  border: 2px solid #ccc;
+  border-radius: 8px;
+  font-size: 14px;
+  box-sizing: border-box;
+  outline: none;
+  transition: border-color 0.3s ease;
+}
+
+.form-group input:focus, 
+.form-group textarea:focus {
+  border-color: #470000; /* Turns dark red when you start typing */
+}
+
+.contact-container button {
+  width: 100%;
+  background-color: #470000; /* Dark red submit button */
+  color: white;
+  border: none;
+  padding: 14px;
+  font-size: 16px;
+  font-weight: bold;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: transform 0.2s ease, background-color 0.2s ease;
+}
+
+.contact-container button:hover {
+  background-color: #660000;
+  transform: scale(1.02); /* Slight hover pop animation */
+}
+
+</style>

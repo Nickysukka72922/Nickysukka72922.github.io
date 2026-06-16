@@ -36,4 +36,9 @@
     <loc>https://nickysukka72922.github.io/game</loc>
     <priority>0.80</priority>
   </url>
+  <!-- Idea Submissions -->
+  <url>
+    <loc>https://nickysukka72922.github.io/idea</loc>
+    <priority>0.80</priority>
+  </url>
 </urlset>
