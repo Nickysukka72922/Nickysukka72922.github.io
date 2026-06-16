@@ -5,25 +5,37 @@ body {
   padding: 0;
 }
 
-/* --- New Fully Responsive & Square Image Styles --- */
-.img {
-  width: 22vw;                /* Fluid width based on screen size */
-  aspect-ratio: 1 / 1;        /* Forces a perfect 1:1 square ratio */
-  padding: 2%;                /* Even spacing around the images */
-  border-radius: 30%;         /* Keeps your custom rounded corners */
-  box-sizing: border-box;     /* Prevents padding from breaking layout dimensions */
-  object-fit: contain;        /* Ensures the actual image inside doesn't stretch */
-  display: inline-block;      /* Keeps images wrapping neatly side-by-side */
+
+/* --- Responsive & Square Image Styles --- */
+.placeholder, .img {
+  width: 22vw;                
+  aspect-ratio: 1 / 1;        
+  padding: 2%;                
+  border-radius: 30%;         
+  box-sizing: border-box;     
+  object-fit: contain;        
+  display: inline-block;      
   vertical-align: middle;
+  
+  /* 1. Prepares the smooth animation speed (0.3 seconds) */
+  transition: transform 0.3s ease, box-shadow 0.3s ease; 
+}
+
+/* 2. The Hover Effect: Scales up by 5% and adds a subtle shadow */
+.placeholder:hover, .img:hover {
+  transform: scale(1.05);
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+  cursor: pointer;
 }
 
 /* --- Mobile Responsiveness --- */
 @media (max-width: 768px) {
   .placeholder, .img {
-    width: 45vw;              /* Makes images larger on smaller mobile screens */
-    padding: 3%;              /* Gives slightly more spacing on mobile phones */
+    width: 45vw;              
+    padding: 3%;              
   }
 }
+
 
 /* --- Integrated Search Bar Styles --- */
 .search-container {
