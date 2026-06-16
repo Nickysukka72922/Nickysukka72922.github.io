@@ -1,9 +1,9 @@
 <div class="contact-container">
     <h2>Idea Submission | Nickysukka72922</h2>
     
-    <form action="https://formspree.io" method="POST">
+    <!-- 1. Added an ID attribute to the form -->
+    <form id="ideaForm" action="https://formspree.io" method="POST">
         
-        <!-- Optional: Tells Formspree to make the email subject line match this title -->
         <input type="hidden" name="_subject" value="New Website Project Idea Submission!">
         
         <div class="form-group">
@@ -26,9 +26,60 @@
             <textarea id="message" name="idea_description" rows="5" required placeholder="Explain what features or tools this project should have..."></textarea>
         </div>
         
-        <button type="submit">Submit Idea</button>
+        <button type="submit" id="submitBtn">Submit Idea</button>
     </form>
+    
+    <!-- 2. Status message container area -->
+    <div id="formStatus" style="display:none; text-align:center; font-weight:bold; margin-top:15px; color:#470000;"></div>
 </div>
+
+<!-- 3. AJAX PROTECTION SCRIPT LINK -->
+<script>
+  const form = document.getElementById("ideaForm");
+  const status = document.getElementById("formStatus");
+  const btn = document.getElementById("submitBtn");
+
+  form.addEventListener("submit", async function(event) {
+    event.preventDefault(); // Blocks the broken default browser link redirection
+    
+    btn.disabled = true;
+    btn.textContent = "Sending...";
+    status.style.display = "block";
+    status.textContent = "Uploading your idea securely...";
+
+    const data = new FormData(event.target);
+
+    // Forces a secure background POST request to bypass iframe method restrictions
+    fetch(event.target.action, {
+      method: form.method, // Explicitly locks in POST format execution
+      body: data,
+      headers: {
+        'Accept': 'application/json'
+      }
+    }).then(response => {
+      if (response.ok) {
+        status.style.color = "#22C55E"; // Success text color changes to bright green
+        status.textContent = "💡 Idea submitted successfully! Thank you, Nicky.";
+        form.reset(); // Completely clears out all the textboxes on your screen
+        btn.textContent = "Submit Another Idea";
+        btn.disabled = false;
+      } else {
+        response.json().then(data => {
+          status.style.color = "#EF4444";
+          status.textContent = "Oops! There was a problem submitting your form.";
+          btn.textContent = "Try Again";
+          btn.disabled = false;
+        });
+      }
+    }).catch(error => {
+      status.style.color = "#EF4444";
+      status.textContent = "Network error. Please check your internet connection.";
+      btn.textContent = "Try Again";
+      btn.disabled = false;
+    });
+  });
+</script>
+
 
 <style>
 /* --- Simple Contact Form Style --- */
