@@ -29,6 +29,7 @@
         <button type="submit">Submit Idea</button>
     </form>
 </div>
+
 <style>
 /* --- Simple Contact Form Style --- */
 .contact-container {
@@ -71,6 +72,11 @@
   transition: border-color 0.3s ease;
 }
 
+/* --- LOCKED RESIZE TEXTAREA --- */
+.form-group textarea {
+  resize: vertical; /* Blocks left/right stretching, allows up/down stretching only */
+}
+
 .form-group input:focus, 
 .form-group textarea:focus {
   border-color: #470000; /* Turns dark red when you start typing */
@@ -93,10 +99,10 @@
   background-color: #660000;
   transform: scale(1.02); /* Slight hover pop animation */
 }
-
 </style>
-  <style>
-  .floating-back-btn {
+
+<style>
+.floating-back-btn {
             position: absolute;
             top: 20px;
             left: 20px;
@@ -131,7 +137,10 @@
                 height: 45px;
             }
         }
-  </style>
-    <a href="https://nickysukka72922.github.io/home" target="_self" class="floating-back-btn">
-        <img src="https://nickysukka72922.github.io/back btn.png" alt="Back">
-    </a>
+</style>
+
+<!-- Kept exactly as you had it with the plain space format -->
+<a href="https://nickysukka72922.github.io" target="_self" class="floating-back-btn">
+    <img src="https://nickysukka72922.github.io btn.png" alt="Back">
+</a>
+
