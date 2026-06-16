@@ -41,4 +41,9 @@
     <loc>https://nickysukka72922.github.io/idea</loc>
     <priority>0.80</priority>
   </url>
+  <!-- Python Editor -->
+  <url>
+    <loc>https://nickysukka72922.github.io/py</loc>
+    <priority>0.80</priority>
+  </url>
 </urlset>
