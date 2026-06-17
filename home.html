@@ -10,23 +10,22 @@
     <title>Home | Nickysukka72922</title>
 </head>
 <body>
-
-<!-- 1. The Preloader Wrapper Screen -->
-<div id="preloader">
-    <div class="loader-content">
-        <!-- A cool spinning game-die / puzzle cube icon -->
-        <div class="spinner"></div>
-        <p>Loading Nicky's Arcade...</p>
+    <!-- 1. The Preloader Wrapper Screen -->
+    <div id="preloader">
+        <div class="loader-content">
+            <!-- A cool spinning game-die / puzzle cube icon -->
+            <div class="spinner"></div>
+            <p>Loading Nicky's Arcade...</p>
+        </div>
     </div>
-</div>
 
-    <!-- 1. Search Bar Interface -->
+    <!-- 2. Search Bar Interface -->
     <div class="search-container">
         <input type="text" id="searchInput" placeholder="Search projects...">
         <ul id="searchResults"></ul>
     </div>
 
-    <!-- 2. Your Project Grid (Fully Repaired Layout) -->
+    <!-- 3. Your Project Grid (Fully Repaired Layout) -->
     <div class="project-grid">
         <a href="https://Nickysukka72922.github.io">
             <img class="img" src="https://nickysukka72922.github.io/website.png">
@@ -34,16 +33,16 @@
         <a href="https://Nickysukka72922.github.io/to do list/">
             <img class="img" src="https://nickysukka72922.github.io/todolist800x800.png">
         </a>
-        <a href="https://nickysukka72922.github.io/scratch-gui/index.html">
+        <a href="https://Nickysukka72922.github.io/scratch-gui/index.html">
             <img class="img" src="https://nickysukka72922.github.io/cat.png">
         </a>
-        <a href="https://nickysukka72922.github.io/physics">
+        <a href="https://Nickysukka72922.github.io/physics">
             <img class="img" src="https://nickysukka72922.github.io/phisics.png">
         </a>
-        <a href="https://nickysukka72922.github.io/3d">
+        <a href="https://Nickysukka72922.github.io/3d">
             <img class="img" src="https://nickysukka72922.github.io/3d.png">
         </a>
-        <a href="https://nickysukka72922.github.io/game">
+        <a href="https://Nickysukka72922.github.io/game">
             <img class="img" src="https://nickysukka72922.github.io/game.png">
         </a>
         <a href="https://Nickysukka72922.github.io/idea">
@@ -54,7 +53,7 @@
         </a>
     </div>
 
-     <!-- 3. Project Search Logic -->
+    <!-- 4. Project Search Logic -->
     <script>
         // Data index maps directly to your links and keywords
         const projects = [
@@ -82,8 +81,7 @@
 
             // Matches your search against the project name or hidden tags
             const matched = projects.filter(p => 
-                p.name.toLowerCase().includes(query) || 
-                p.tags.toLowerCase().includes(query)
+                p.name.toLowerCase().includes(query) || p.tags.toLowerCase().includes(query)
             );
 
             if (matched.length > 0) {
@@ -113,15 +111,39 @@
             }
         });
     </script>
-<script>
-    // Listens for the exact moment the browser finishes loading all files
-    window.addEventListener('load', function() {
-        const preloader = document.getElementById('preloader');
-        
-        // Adds the fade-out class to smoothly trigger the CSS opacity transition
-        preloader.classList.add('fade-out');
-    });
-</script>
+
+    <!-- 5. Preloader Fade-In/Out and Link Transition Logic -->
+    <script>
+        // 1. When the page first opens, fade away the red screen
+        window.addEventListener('load', function() {
+            const preloader = document.getElementById('preloader');
+            preloader.classList.add('fade-out');
+        });
+
+        // 2. Look for all project links on your page
+        document.querySelectorAll('a').forEach(link => {
+            link.addEventListener('click', function(e) {
+                const targetUrl = this.href;
+                
+                // Ignore empty links or links that open in a brand new tab
+                if (!targetUrl || this.target === '_blank' || targetUrl.includes('#')) {
+                    return;
+                }
+
+                // STOP the browser from changing pages instantly!
+                e.preventDefault();
+
+                // Bring your deep red loading screen back up
+                const preloader = document.getElementById('preloader');
+                preloader.classList.remove('fade-out');
+
+                // FORCE the browser to wait 500 milliseconds (0.5 seconds)
+                // This gives your red screen enough time to fade back in before swapping URLs!
+                setTimeout(() => {
+                    window.location.href = targetUrl;
+                }, 500);
+            });
+        });
+    </script>
 </body>
 </html>
-

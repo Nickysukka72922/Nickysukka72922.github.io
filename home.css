@@ -157,4 +157,23 @@ body {
   visibility: hidden;
 }
 
+/* --- Page Transition Overlay Animations --- */
+.fade-in-page {
+  animation: fadeInEffect 0.5s ease forward;
+}
+
+.fade-out-page {
+  animation: fadeOutEffect 0.5s ease forwards;
+}
+
+@keyframes fadeInEffect {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes fadeOutEffect {
+  from { opacity: 1; }
+  to { opacity: 0; }
+}
+
 
