@@ -5,14 +5,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>My GitHub Python Editor</title>
     
-    <!-- TailWind CSS via Unpkg -->
-    <script src="https://unpkg.com"></script>
-    
-    <!-- Load Pyodide Core directly via Unpkg -->
-    <script src="https://unpkg.com"></script>
-
-    <!-- Load Monaco Loader directly without require.js -->
-    <script src="https://cloudflare.com"></script>
+    <!-- Local Scripts -->
+    <script src="tailwind.js"></script>
+    <script src="loader.js"></script>
 </head>
 <body class="bg-gray-900 text-white h-screen flex flex-col">
 
@@ -36,31 +31,13 @@
         </div>
     </main>
 
-    <script>
+    <script type="module">
         let editor;
         let pyodide;
 
-        // 1. Safe Monaco Editor Initialization
-        if (typeof require !== 'undefined') {
-            initializeMonaco();
-        } else if (typeof requirejs !== 'undefined') {
-            requirejs.config({ paths: { vs: 'https://cloudflare.com' } });
-            requirejs(['vs/editor/editor.main'], function () { createEditor(); });
-        } else {
-            // Ultimate fallback using Monaco's native AMD loader
-            window.require = { paths: { vs: 'https://cloudflare.com' } };
-            const script = document.createElement('script');
-            script.src = 'https://cloudflare.com/loader.js';
-            script.onload = () => {
-                window.require.config({ paths: { vs: 'https://cloudflare.com' } });
-                window.require(['vs/editor/editor.main'], function() {
-                    createEditor();
-                });
-            };
-            document.body.appendChild(script);
-        }
-
-        function createEditor() {
+        // 1. Initialize Monaco Editor
+        require.config({ paths: { vs: 'https://cloudflare.com' } });
+        require(['vs/editor/editor.main'], function () {
             editor = monaco.editor.create(document.getElementById('editor-container'), {
                 value: `def greet(name):\n    return f"Hello, {name}!"\n\nprint(greet("GitHub User"))\n`,
                 language: 'python',
@@ -68,23 +45,28 @@
                 automaticLayout: true,
                 fontSize: 14
             });
-        }
+        });
 
-        // 2. Initialize Pyodide WebAssembly Compiler with secure URLs
+        // 2. Safe Local Module Load for Pyodide
         async function main() {
             const outputElement = document.getElementById("output");
             const runButton = document.getElementById("run-btn");
 
             try {
-                // Point explicitly to unpkg to avoid jsdelivr rules completely
-                pyodide = await loadPyodide({
-                    indexURL: "https://unpkg.com"
+                // This forces the browser to import the local file as an isolated module
+                const pyodideModule = await import("./pyodide.js");
+                
+                // Initialize using the module's exposed loader function
+                pyodide = await pyodideModule.loadPyodide({
+                    indexURL: "./"
                 });
+                
                 outputElement.textContent = "Python engine ready!\nClick 'Run Code' to execute.";
                 runButton.disabled = false;
                 runButton.textContent = "Run Code";
             } catch (err) {
-                outputElement.textContent = `Failed to load Python: ${err.message}`;
+                outputElement.textContent = `Local Load Error: ${err.message}\nTry running with standard web headers.`;
+                console.error(err);
             }
         }
         main();
