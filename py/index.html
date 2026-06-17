@@ -51,7 +51,7 @@
             });
         }
 
-        // 2. Initialize Pyodide Using 100% Complete Local Folder Assets
+        // 2. Initialize Pyodide Bypassing the Package Lock File
         async function initPyodide() {
             const outputElement = document.getElementById("output");
             const runButton = document.getElementById("run-btn");
@@ -59,11 +59,12 @@
             try {
                 if (typeof loadPyodide === 'function') {
                     
-                    // Automatically track down the active base folder directory
                     const currentFolderUrl = window.location.href.substring(0, window.location.href.lastIndexOf('/')) + '/';
                     
                     pyodideInstance = await loadPyodide({
-                        indexURL: currentFolderUrl
+                        indexURL: currentFolderUrl,
+                        // FIXED: Setting this explicitly to null skips the broken package check entirely
+                        lockFileURL: null
                     });
                     
                     outputElement.textContent = "Python engine ready!\nClick 'Run Code' to execute.";
