@@ -5,11 +5,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>My GitHub Python Editor</title>
     
-    <!-- Local Files Only -->
-    <link rel="stylesheet" href="vs/editor/editor.main.css">
+    <!-- Local Files for Styling and Python Engine -->
     <script src="tailwind.js"></script>
-    <script src="vs/loader.js"></script>
     <script src="pyodide.js"></script>
+
+    <!-- Secure CDN Loader for Monaco Editor (Fixes the missing 404 subfiles) -->
+    <script src="https://cloudflare.com"></script>
 </head>
 <body class="bg-gray-900 text-white h-screen flex flex-col">
 
@@ -33,14 +34,14 @@
         </div>
     </main>
 
-    <!-- Unified Local Runtime Execution Logic -->
+    <!-- Unified Runtime Logic -->
     <script>
         let editor;
         let pyodideInstance;
 
-        // 1. FIXED: Initialize Monaco Editor using 100% local folder path files
+        // 1. Initialize Monaco Editor from Secure Cloudflare Mirror
         if (typeof require !== 'undefined') {
-            require.config({ paths: { vs: './vs' } });
+            require.config({ paths: { vs: 'https://cloudflare.com' } });
             require(['vs/editor/editor.main'], function () {
                 editor = monaco.editor.create(document.getElementById('editor-container'), {
                     value: `def greet(name):\n    return f"Hello, {name}!"\n\nprint(greet("GitHub User"))\n`,
@@ -52,7 +53,7 @@
             });
         }
 
-        // 2. Initialize Pyodide Using Local Folder Assets
+        // 2. Initialize Pyodide Using 100% Local Folder Assets (Bypassing 404 Loops)
         async function initPyodide() {
             const outputElement = document.getElementById("output");
             const runButton = document.getElementById("run-btn");
@@ -67,7 +68,7 @@
                         lockFileURL: emptyJsonDataUri
                     });
                     
-                    outputElement.textContent = "Python engine ready!\nClick 'Run Code' to execute.";
+                    outputElement.textContent = "Python engine ready!\nType your script on the left and click 'Run Code'.";
                     runButton.disabled = false;
                     runButton.classList.remove('opacity-50', 'cursor-not-allowed');
                     runButton.textContent = "Run Code";
