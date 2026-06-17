@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>My GitHub Python Editor</title>
     
-    <!-- Local Files Only -->
+    <!-- Local Layout Files Only -->
     <script src="tailwind.js"></script>
     <script src="loader.js"></script>
     <script src="pyodide.js"></script>
@@ -51,7 +51,7 @@
             });
         }
 
-        // 2. Initialize Pyodide Bypassing Lock Checks
+        // 2. Initialize Pyodide with forced local configuration parameters
         async function initPyodide() {
             const outputElement = document.getElementById("output");
             const runButton = document.getElementById("run-btn");
@@ -61,10 +61,13 @@
                     
                     const currentFolderUrl = window.location.href.substring(0, window.location.href.lastIndexOf('/')) + '/';
                     
+                    // Base64 mapping for an empty valid JSON block: {"info":{"version":"0.26.1"},"packages":{}}
+                    const emptyJsonDataUri = "data:application/json;base64,eyJpbmZvIjp7InZlcnNpb24iOiIwLjI2LjEifSwicGFja2FnZXMiOnt9fQ==";
+
                     pyodideInstance = await loadPyodide({
                         indexURL: currentFolderUrl,
-                        // FIXED: Setting this explicitly to an empty string stops the auto-fetch JSON loop
-                        lockFileURL: ""
+                        // CRUCIAL FIX: Injecting a data URI blocks Pyodide from making any background network fetches for the file
+                        lockFileURL: emptyJsonDataUri
                     });
                     
                     outputElement.textContent = "Python engine ready!\nClick 'Run Code' to execute.";
@@ -72,7 +75,7 @@
                     runButton.classList.remove('opacity-50', 'cursor-not-allowed');
                     runButton.textContent = "Run Code";
                 } else {
-                    throw new Error("The 'loadPyodide' hook was blocked or not parsed by the browser.");
+                    throw new Error("The global 'loadPyodide' script hook was not parsed by the browser.");
                 }
             } catch (err) {
                 outputElement.textContent = `Local Runtime Load Error:\n${err.message}`;
