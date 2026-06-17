@@ -11,6 +11,15 @@
 </head>
 <body>
 
+<!-- 1. The Preloader Wrapper Screen -->
+<div id="preloader">
+    <div class="loader-content">
+        <!-- A cool spinning game-die / puzzle cube icon -->
+        <div class="spinner"></div>
+        <p>Loading Nicky's Arcade...</p>
+    </div>
+</div>
+
     <!-- 1. Search Bar Interface -->
     <div class="search-container">
         <input type="text" id="searchInput" placeholder="Search projects...">
@@ -104,6 +113,15 @@
             }
         });
     </script>
+<script>
+    // Listens for the exact moment the browser finishes loading all files
+    window.addEventListener('load', function() {
+        const preloader = document.getElementById('preloader');
+        
+        // Adds the fade-out class to smoothly trigger the CSS opacity transition
+        preloader.classList.add('fade-out');
+    });
+</script>
 </body>
 </html>
 

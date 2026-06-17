@@ -99,3 +99,62 @@ body {
   font-style: italic;
 }
 
+/* --- Master Preloader Screen Overlay --- */
+#preloader {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: #470000; /* Matches your deep red theme color */
+  z-index: 999999;           /* Puts it on the absolute top layer over everything */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-family: sans-serif;
+  transition: opacity 0.5s ease, visibility 0.5s ease; /* Handles the smooth fade-out animation */
+}
+
+.loader-content {
+  text-align: center;
+  color: #ffffff;
+}
+
+.loader-content p {
+  margin-top: 20px;
+  font-size: 18px;
+  font-weight: bold;
+  letter-spacing: 1px;
+}
+
+/* --- The Spinning Animation --- */
+.spinner {
+  width: 50px;
+  height: 50px;
+  background-color: #ffffff;
+  margin: 0 auto;
+  border-radius: 12px; /* Smooth rounded square shape */
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+  animation: flipCube 1.2s infinite ease-in-out; /* Links to the keyframe rules below */
+}
+
+/* The actual movements of the spinning block over time */
+@keyframes flipCube {
+  0% { 
+    transform: perspective(120px) rotateX(0deg) rotateY(0deg); 
+  }
+  50% { 
+    transform: perspective(120px) rotateX(-180.1deg) rotateY(0deg); 
+  }
+  100% { 
+    transform: perspective(120px) rotateX(-180deg) rotateY(-179.9deg); 
+  }
+}
+
+/* --- Fade Out Class (Triggered by JavaScript) --- */
+#preloader.fade-out {
+  opacity: 0;
+  visibility: hidden;
+}
+
+
