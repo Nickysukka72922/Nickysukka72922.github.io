@@ -5,16 +5,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>My GitHub Python Editor</title>
     
-    <!-- Local Files for Styling and Python Engine -->
+    <!-- Local Files for Design Styling and Python Engine -->
     <script src="tailwind.js"></script>
     <script src="pyodide.js"></script>
-
-    <!-- Secure CDN Loader for Monaco Editor (Fixes the missing 404 subfiles) -->
-    <script src="https://cloudflare.com"></script>
 </head>
 <body class="bg-gray-900 text-white h-screen flex flex-col">
 
-    <!-- Navbar -->
+    <!-- Navbar Layout -->
     <header class="bg-gray-800 p-4 flex justify-between items-center border-b border-gray-700">
         <h1 class="text-xl font-bold text-green-400">🐍 Browser Python IDE</h1>
         <button id="run-btn" class="bg-green-500 hover:bg-green-600 text-gray-900 font-bold px-6 py-2 rounded transition opacity-50 cursor-not-allowed" disabled>
@@ -22,38 +19,47 @@
         </button>
     </header>
 
-    <!-- Main Workspace -->
+    <!-- Main Workspace Frame -->
     <main class="flex-1 flex flex-col md:flex-row overflow-hidden">
-        <!-- Code Editor Section -->
-        <div id="editor-container" class="w-full md:w-1/2 h-1/2 md:h-full"></div>
         
-        <!-- Console Terminal Section -->
+        <!-- 1. UNBLOCKABLE TEXT EDITOR PANEL -->
+        <div class="w-full md:w-1/2 h-1/2 md:h-full flex flex-col bg-gray-950 p-2">
+            <div class="flex justify-between items-center px-2 py-1 text-xs text-gray-500 uppercase tracking-wider font-semibold">
+                <span>python_script.py</span>
+                <span class="text-green-500 text-xxs">● Native Mode Enabled</span>
+            </div>
+            <!-- Standard HTML Textarea styled exactly like a modern dark-theme code box -->
+            <textarea id="code-editor" class="flex-1 w-full bg-gray-950 text-green-300 p-4 font-mono text-sm border border-gray-800 rounded focus:outline-none focus:border-green-600 resize-none leading-relaxed" spellcheck="false">def greet(name):
+    return f"Hello, {name}!"
+
+print(greet("GitHub User"))
+print("Calculations complete.")</textarea>
+        </div>
+        
+        <!-- 2. INTERACTIVE OUTPUT TERMINAL CONSOLE -->
         <div class="w-full md:w-1/2 h-1/2 md:h-full bg-black p-4 flex flex-col border-t md:border-t-0 md:border-l border-gray-700">
             <h2 class="text-sm font-semibold text-gray-400 mb-2 uppercase tracking-wider">Console Output</h2>
-            <pre id="output" class="flex-1 font-mono text-sm text-gray-300 overflow-y-auto whitespace-pre-wrap">Initializing workspace...</pre>
+            <pre id="output" class="flex-1 font-mono text-sm text-gray-300 overflow-y-auto whitespace-pre-wrap">Initializing workspace layers...</pre>
         </div>
     </main>
 
-    <!-- Unified Runtime Logic -->
+    <!-- Native Local Runtime Execution Logic -->
     <script>
-        let editor;
         let pyodideInstance;
+        const codeTextarea = document.getElementById('code-editor');
 
-        // 1. Initialize Monaco Editor from Secure Cloudflare Mirror
-        if (typeof require !== 'undefined') {
-            require.config({ paths: { vs: 'https://cloudflare.com' } });
-            require(['vs/editor/editor.main'], function () {
-                editor = monaco.editor.create(document.getElementById('editor-container'), {
-                    value: `def greet(name):\n    return f"Hello, {name}!"\n\nprint(greet("GitHub User"))\n`,
-                    language: 'python',
-                    theme: 'vs-dark',
-                    automaticLayout: true,
-                    fontSize: 14
-                });
-            });
-        }
+        // Allow Tab indentation functionality inside the code panel
+        codeTextarea.addEventListener('keydown', function(e) {
+            if (e.key === 'Tab') {
+                e.preventDefault();
+                const start = this.selectionStart;
+                const end = this.selectionEnd;
+                this.value = this.value.substring(0, start) + "    " + this.value.substring(end);
+                this.selectionStart = this.selectionEnd = start + 4;
+            }
+        });
 
-        // 2. Initialize Pyodide Using 100% Local Folder Assets (Bypassing 404 Loops)
+        // Initialize Pyodide Using 100% Local Folder Assets
         async function initPyodide() {
             const outputElement = document.getElementById("output");
             const runButton = document.getElementById("run-btn");
@@ -82,14 +88,15 @@
         }
         initPyodide();
 
-        // 3. Execution Processing Engine
+        // Code Execution Stream Engine
         document.getElementById("run-btn").addEventListener("click", async () => {
-            if (!editor || !pyodideInstance) return;
+            if (!pyodideInstance) return;
             
             const outputElement = document.getElementById("output");
             outputElement.textContent = "Running code sequence...\n";
             
-            const code = editor.getValue();
+            // Grabs code values cleanly out of the textarea
+            const code = codeTextarea.value;
 
             try {
                 pyodideInstance.runPython(`
