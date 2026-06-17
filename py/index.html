@@ -5,10 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>My GitHub Python Editor</title>
     
-    <!-- 1. Load style sheets first -->
+    <!-- Local Files Only -->
     <script src="tailwind.js"></script>
-    
-    <!-- 2. CRUCIAL: Load the Monaco script loader before ANY other code runs -->
     <script src="loader.js"></script>
 </head>
 <body class="bg-gray-900 text-white h-screen flex flex-col">
@@ -33,11 +31,10 @@
         </div>
     </main>
 
-    <!-- 3. Safe Global Monaco Initialization Window -->
+    <!-- Monaco Editor Load Routine (Normal Script Scope) -->
     <script>
         let editor;
 
-        // Since loader.js is loaded above, 'require' is now 100% defined safely here
         if (typeof require !== 'undefined') {
             require.config({ paths: { vs: 'https://cloudflare.com' } });
             require(['vs/editor/editor.main'], function () {
@@ -52,7 +49,7 @@
         }
     </script>
 
-    <!-- Pyodide Execution Loop (Isolated Module Scope) -->
+    <!-- Pyodide Load Routine (Module Scope) -->
     <script type="module">
         let pyodide;
 
@@ -61,17 +58,21 @@
             const runButton = document.getElementById("run-btn");
 
             try {
-                // Dynamically import the local script file
-                const pyodideModule = await import("./pyodide.js");
+                // 1. Dynamically evaluate the local file
+                await import("./pyodide.js");
                 
-                // Point explicitly to current directory to grab local WebAssembly binaries
-                pyodide = await pyodideModule.loadPyodide({
-                    indexURL: "./"
-                });
-                
-                outputElement.textContent = "Python engine ready!\nClick 'Run Code' to execute.";
-                runButton.disabled = false;
-                runButton.textContent = "Run Code";
+                // 2. FIXED: Pyodide creates a global function when evaluated!
+                if (typeof globalThis.loadPyodide === 'function') {
+                    pyodide = await globalThis.loadPyodide({
+                        indexURL: "./"
+                    });
+                    
+                    outputElement.textContent = "Python engine ready!\nClick 'Run Code' to execute.";
+                    runButton.disabled = false;
+                    runButton.textContent = "Run Code";
+                } else {
+                    throw new Error("loadPyodide function missing from global context.");
+                }
             } catch (err) {
                 outputElement.textContent = `Local Runtime Load Error:\n${err.message}`;
                 console.error(err);
@@ -79,7 +80,7 @@
         }
         initPyodide();
 
-        // Execution Handler
+        // Run Code Execution Listener
         document.getElementById("run-btn").addEventListener("click", async () => {
             if (!editor) return;
             
