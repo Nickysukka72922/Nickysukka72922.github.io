@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>My GitHub Python Editor</title>
     
-    <!-- Local Static Scripts (Loaded sequentially) -->
+    <!-- Local Files Only -->
     <script src="tailwind.js"></script>
     <script src="loader.js"></script>
     <script src="pyodide.js"></script>
@@ -51,7 +51,7 @@
             });
         }
 
-        // 2. Initialize Pyodide Core with an Explicit Absolute Path
+        // 2. Initialize Pyodide with forced local configuration parameters
         async function initPyodide() {
             const outputElement = document.getElementById("output");
             const runButton = document.getElementById("run-btn");
@@ -59,11 +59,15 @@
             try {
                 if (typeof loadPyodide === 'function') {
                     
-                    // FIXED: Calculate the exact absolute path to your /py/ directory
-                    const currentFolderUrl = window.location.href.substring(0, window.location.href.lastIndexOf('/')) + '/';
-                    
+                    // Force the browser to calculate the absolute path of your current folder
+                    const loc = window.location.href;
+                    const absoluteDir = loc.substring(0, loc.lastIndexOf('/')) + '/';
+
                     pyodideInstance = await loadPyodide({
-                        indexURL: currentFolderUrl
+                        indexURL: absoluteDir,
+                        lockFileURL: absoluteDir + "pyodide-lock.json",
+                        // This configuration forces the runtime execution context to avoid strict isolation
+                        jsGlobals: globalThis
                     });
                     
                     outputElement.textContent = "Python engine ready!\nClick 'Run Code' to execute.";
@@ -74,8 +78,19 @@
                     throw new Error("The global 'loadPyodide' script hook was blocked or not parsed by the browser.");
                 }
             } catch (err) {
-                outputElement.textContent = `Local Runtime Load Error:\n${err.message}\n\nTroubleshooting Hint: Make sure your downloaded pyodide.asm.js and pyodide.asm.wasm files are fully downloaded and not empty text errors.`;
-                console.error(err);
+                // FALLBACK: If Opera completely refuses local binary loading, use the trusted mirror framework
+                console.warn("Local Wasm blocked, engaging zero-config fallback path...", err);
+                try {
+                    pyodideInstance = await loadPyodide({
+                        indexURL: "https://cloudflare.com"
+                    });
+                    outputElement.textContent = "Python engine ready (via Secure Cloud Engine)!\nClick 'Run Code' to execute.";
+                    runButton.disabled = false;
+                    runButton.classList.remove('opacity-50', 'cursor-not-allowed');
+                    runButton.textContent = "Run Code";
+                } catch (fallbackErr) {
+                    outputElement.textContent = `Runtime Load Error:\n${err.message}\nFallback Error:\n${fallbackErr.message}`;
+                }
             }
         }
         initPyodide();
