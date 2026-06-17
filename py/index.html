@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My GitHub Python Editor</title>
+    
+    <!-- TailWind CSS via Unpkg -->
+    <script src="https://unpkg.com"></script>
+    
+    <!-- Load Pyodide Core directly via Unpkg -->
+    <script src="https://unpkg.com"></script>
+
+    <!-- Load Monaco Loader directly without require.js -->
+    <script src="https://cloudflare.com"></script>
+</head>
+<body class="bg-gray-900 text-white h-screen flex flex-col">
+
+    <!-- Navbar -->
+    <header class="bg-gray-800 p-4 flex justify-between items-center border-b border-gray-700">
+        <h1 class="text-xl font-bold text-green-400">🐍 Browser Python IDE</h1>
+        <button id="run-btn" class="bg-green-500 hover:bg-green-600 text-gray-900 font-bold px-6 py-2 rounded transition" disabled>
+            Loading Python Engine...
+        </button>
+    </header>
+
+    <!-- Main Workspace -->
+    <main class="flex-1 flex flex-col md:flex-row overflow-hidden">
+        <!-- Code Editor Section -->
+        <div id="editor-container" class="w-full md:w-1/2 h-1/2 md:h-full"></div>
+        
+        <!-- Console Terminal Section -->
+        <div class="w-full md:w-1/2 h-1/2 md:h-full bg-black p-4 flex flex-col border-t md:border-t-0 md:border-l border-gray-700">
+            <h2 class="text-sm font-semibold text-gray-400 mb-2 uppercase tracking-wider">Console Output</h2>
+            <pre id="output" class="flex-1 font-mono text-sm text-gray-300 overflow-y-auto whitespace-pre-wrap">Initializing workspace...</pre>
+        </div>
+    </main>
+
+    <script>
+        let editor;
+        let pyodide;
+
+        // 1. Safe Monaco Editor Initialization
+        if (typeof require !== 'undefined') {
+            initializeMonaco();
+        } else if (typeof requirejs !== 'undefined') {
+            requirejs.config({ paths: { vs: 'https://cloudflare.com' } });
+            requirejs(['vs/editor/editor.main'], function () { createEditor(); });
+        } else {
+            // Ultimate fallback using Monaco's native AMD loader
+            window.require = { paths: { vs: 'https://cloudflare.com' } };
+            const script = document.createElement('script');
+            script.src = 'https://cloudflare.com/loader.js';
+            script.onload = () => {
+                window.require.config({ paths: { vs: 'https://cloudflare.com' } });
+                window.require(['vs/editor/editor.main'], function() {
+                    createEditor();
+                });
+            };
+            document.body.appendChild(script);
+        }
+
+        function createEditor() {
+            editor = monaco.editor.create(document.getElementById('editor-container'), {
+                value: `def greet(name):\n    return f"Hello, {name}!"\n\nprint(greet("GitHub User"))\n`,
+                language: 'python',
+                theme: 'vs-dark',
+                automaticLayout: true,
+                fontSize: 14
+            });
+        }
+
+        // 2. Initialize Pyodide WebAssembly Compiler with secure URLs
+        async function main() {
+            const outputElement = document.getElementById("output");
+            const runButton = document.getElementById("run-btn");
+
+            try {
+                // Point explicitly to unpkg to avoid jsdelivr rules completely
+                pyodide = await loadPyodide({
+                    indexURL: "https://unpkg.com"
+                });
+                outputElement.textContent = "Python engine ready!\nClick 'Run Code' to execute.";
+                runButton.disabled = false;
+                runButton.textContent = "Run Code";
+            } catch (err) {
+                outputElement.textContent = `Failed to load Python: ${err.message}`;
+            }
+        }
+        main();
+
+        // 3. Execute Code and Redirect Print Statements
+        document.getElementById("run-btn").addEventListener("click", async () => {
+            const outputElement = document.getElementById("output");
+            outputElement.textContent = "Running...\n";
+            
+            const code = editor.getValue();
+
+            try {
+                pyodide.runPython(`
+                    import sys
+                    import io
+                    sys.stdout = io.StringIO()
+                    sys.stderr = io.StringIO()
+                `);
+
+                await pyodide.runPythonAsync(code);
+
+                const stdout = pyodide.runPython("sys.stdout.getvalue()");
+                const stderr = pyodide.runPython("sys.stderr.getvalue()");
+
+                outputElement.textContent = stdout + stderr;
+                if (!stdout && !stderr) {
+                    outputElement.textContent = "Code executed successfully with no visual output.";
+                }
+            } catch (err) {
+                outputElement.textContent = `Error:\n${err.message}`;
+            }
+        });
+    </script>
+</body>
+</html>

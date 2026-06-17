@@ -1,0 +1,1 @@
+Redirecting to /@tailwindcss/browser@4.3.1/dist/index.global.js
