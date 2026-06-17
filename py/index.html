@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>My GitHub Python Editor</title>
     
-    <!-- Local Static Script Hooks Only -->
+    <!-- Local Files Only -->
     <script src="tailwind.js"></script>
     <script src="loader.js"></script>
     <script src="pyodide.js"></script>
@@ -51,7 +51,7 @@
             });
         }
 
-        // 2. Initialize Pyodide Bypassing the Package Lock File
+        // 2. Initialize Pyodide Bypassing Lock Checks
         async function initPyodide() {
             const outputElement = document.getElementById("output");
             const runButton = document.getElementById("run-btn");
@@ -63,8 +63,8 @@
                     
                     pyodideInstance = await loadPyodide({
                         indexURL: currentFolderUrl,
-                        // FIXED: Setting this explicitly to null skips the broken package check entirely
-                        lockFileURL: null
+                        // FIXED: Setting this explicitly to an empty string stops the auto-fetch JSON loop
+                        lockFileURL: ""
                     });
                     
                     outputElement.textContent = "Python engine ready!\nClick 'Run Code' to execute.";
@@ -72,7 +72,7 @@
                     runButton.classList.remove('opacity-50', 'cursor-not-allowed');
                     runButton.textContent = "Run Code";
                 } else {
-                    throw new Error("The global 'loadPyodide' script hook was not parsed by the browser.");
+                    throw new Error("The 'loadPyodide' hook was blocked or not parsed by the browser.");
                 }
             } catch (err) {
                 outputElement.textContent = `Local Runtime Load Error:\n${err.message}`;
