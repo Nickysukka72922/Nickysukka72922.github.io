@@ -5,8 +5,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>My GitHub Python Editor</title>
     
-    <!-- 100% Local Self-Hosted Scripts -->
+    <!-- 1. Load style sheets first -->
     <script src="tailwind.js"></script>
+    
+    <!-- 2. CRUCIAL: Load the Monaco script loader before ANY other code runs -->
     <script src="loader.js"></script>
 </head>
 <body class="bg-gray-900 text-white h-screen flex flex-col">
@@ -31,25 +33,30 @@
         </div>
     </main>
 
-    <!-- Crucial JavaScript Fix -->
-    <script type="module">
+    <!-- 3. Safe Global Monaco Initialization Window -->
+    <script>
         let editor;
+
+        // Since loader.js is loaded above, 'require' is now 100% defined safely here
+        if (typeof require !== 'undefined') {
+            require.config({ paths: { vs: 'https://cloudflare.com' } });
+            require(['vs/editor/editor.main'], function () {
+                editor = monaco.editor.create(document.getElementById('editor-container'), {
+                    value: `def greet(name):\n    return f"Hello, {name}!"\n\nprint(greet("GitHub User"))\n`,
+                    language: 'python',
+                    theme: 'vs-dark',
+                    automaticLayout: true,
+                    fontSize: 14
+                });
+            });
+        }
+    </script>
+
+    <!-- Pyodide Execution Loop (Isolated Module Scope) -->
+    <script type="module">
         let pyodide;
 
-        // 1. Initialize Monaco Editor
-        require.config({ paths: { vs: 'https://cloudflare.com' } });
-        require(['vs/editor/editor.main'], function () {
-            editor = monaco.editor.create(document.getElementById('editor-container'), {
-                value: `def greet(name):\n    return f"Hello, {name}!"\n\nprint(greet("GitHub User"))\n`,
-                language: 'python',
-                theme: 'vs-dark',
-                automaticLayout: true,
-                fontSize: 14
-            });
-        });
-
-        // 2. Safe Local Module Binding for Pyodide
-        async function main() {
+        async function initPyodide() {
             const outputElement = document.getElementById("output");
             const runButton = document.getElementById("run-btn");
 
@@ -57,11 +64,8 @@
                 // Dynamically import the local script file
                 const pyodideModule = await import("./pyodide.js");
                 
-                // CRUCIAL FIX: Expose the loader function explicitly to the browser context
-                globalThis.loadPyodide = pyodideModule.loadPyodide;
-                
-                // Execute the initialization out of our current local folder
-                pyodide = await globalThis.loadPyodide({
+                // Point explicitly to current directory to grab local WebAssembly binaries
+                pyodide = await pyodideModule.loadPyodide({
                     indexURL: "./"
                 });
                 
@@ -69,14 +73,16 @@
                 runButton.disabled = false;
                 runButton.textContent = "Run Code";
             } catch (err) {
-                outputElement.textContent = `Local Load Error:\n${err.message}`;
+                outputElement.textContent = `Local Runtime Load Error:\n${err.message}`;
                 console.error(err);
             }
         }
-        main();
+        initPyodide();
 
-        // 3. Execute Code and Redirect Print Statements
+        // Execution Handler
         document.getElementById("run-btn").addEventListener("click", async () => {
+            if (!editor) return;
+            
             const outputElement = document.getElementById("output");
             outputElement.textContent = "Running...\n";
             
