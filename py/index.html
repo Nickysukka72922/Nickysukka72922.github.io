@@ -5,16 +5,17 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>My GitHub Python Editor</title>
     
-    <!-- Local Files Only -->
+    <!-- Local Static Scripts (Loaded sequentially) -->
     <script src="tailwind.js"></script>
     <script src="loader.js"></script>
+    <script src="pyodide.js"></script>
 </head>
 <body class="bg-gray-900 text-white h-screen flex flex-col">
 
     <!-- Navbar -->
     <header class="bg-gray-800 p-4 flex justify-between items-center border-b border-gray-700">
         <h1 class="text-xl font-bold text-green-400">🐍 Browser Python IDE</h1>
-        <button id="run-btn" class="bg-green-500 hover:bg-green-600 text-gray-900 font-bold px-6 py-2 rounded transition" disabled>
+        <button id="run-btn" class="bg-green-500 hover:bg-green-600 text-gray-900 font-bold px-6 py-2 rounded transition opacity-50 cursor-not-allowed" disabled>
             Loading Python Engine...
         </button>
     </header>
@@ -31,10 +32,12 @@
         </div>
     </main>
 
-    <!-- Monaco Editor Load Routine (Normal Script Scope) -->
+    <!-- Unified Execution Logic -->
     <script>
         let editor;
+        let pyodideInstance;
 
+        // 1. Initialize Monaco Editor Safely
         if (typeof require !== 'undefined') {
             require.config({ paths: { vs: 'https://cloudflare.com' } });
             require(['vs/editor/editor.main'], function () {
@@ -47,67 +50,64 @@
                 });
             });
         }
-    </script>
 
-    <!-- Pyodide Load Routine (Module Scope) -->
-    <script type="module">
-        let pyodide;
-
+        // 2. Initialize Pyodide Core with an Explicit Absolute Path
         async function initPyodide() {
             const outputElement = document.getElementById("output");
             const runButton = document.getElementById("run-btn");
 
             try {
-                // 1. Dynamically evaluate the local file
-                await import("./pyodide.js");
-                
-                // 2. FIXED: Pyodide creates a global function when evaluated!
-                if (typeof globalThis.loadPyodide === 'function') {
-                    pyodide = await globalThis.loadPyodide({
-                        indexURL: "./"
+                if (typeof loadPyodide === 'function') {
+                    
+                    // FIXED: Calculate the exact absolute path to your /py/ directory
+                    const currentFolderUrl = window.location.href.substring(0, window.location.href.lastIndexOf('/')) + '/';
+                    
+                    pyodideInstance = await loadPyodide({
+                        indexURL: currentFolderUrl
                     });
                     
                     outputElement.textContent = "Python engine ready!\nClick 'Run Code' to execute.";
                     runButton.disabled = false;
+                    runButton.classList.remove('opacity-50', 'cursor-not-allowed');
                     runButton.textContent = "Run Code";
                 } else {
-                    throw new Error("loadPyodide function missing from global context.");
+                    throw new Error("The global 'loadPyodide' script hook was blocked or not parsed by the browser.");
                 }
             } catch (err) {
-                outputElement.textContent = `Local Runtime Load Error:\n${err.message}`;
+                outputElement.textContent = `Local Runtime Load Error:\n${err.message}\n\nTroubleshooting Hint: Make sure your downloaded pyodide.asm.js and pyodide.asm.wasm files are fully downloaded and not empty text errors.`;
                 console.error(err);
             }
         }
         initPyodide();
 
-        // Run Code Execution Listener
+        // 3. Code Run Processing Engine
         document.getElementById("run-btn").addEventListener("click", async () => {
-            if (!editor) return;
+            if (!editor || !pyodideInstance) return;
             
             const outputElement = document.getElementById("output");
-            outputElement.textContent = "Running...\n";
+            outputElement.textContent = "Running calculation stream...\n";
             
             const code = editor.getValue();
 
             try {
-                pyodide.runPython(`
+                pyodideInstance.runPython(`
                     import sys
                     import io
                     sys.stdout = io.StringIO()
                     sys.stderr = io.StringIO()
                 `);
 
-                await pyodide.runPythonAsync(code);
+                await pyodideInstance.runPythonAsync(code);
 
-                const stdout = pyodide.runPython("sys.stdout.getvalue()");
-                const stderr = pyodide.runPython("sys.stderr.getvalue()");
+                const stdout = pyodideInstance.runPython("sys.stdout.getvalue()");
+                const stderr = pyodideInstance.runPython("sys.stderr.getvalue()");
 
                 outputElement.textContent = stdout + stderr;
                 if (!stdout && !stderr) {
-                    outputElement.textContent = "Code executed successfully with no visual output.";
+                    outputElement.textContent = "Code executed cleanly (Returned process 0).";
                 }
             } catch (err) {
-                outputElement.textContent = `Error:\n${err.message}`;
+                outputElement.textContent = `Traceback Execution Fault:\n${err.message}`;
             }
         });
     </script>
