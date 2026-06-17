@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>My GitHub Python Editor</title>
     
-    <!-- Local Scripts -->
+    <!-- 100% Local Self-Hosted Scripts -->
     <script src="tailwind.js"></script>
     <script src="loader.js"></script>
 </head>
@@ -31,6 +31,7 @@
         </div>
     </main>
 
+    <!-- Crucial JavaScript Fix -->
     <script type="module">
         let editor;
         let pyodide;
@@ -47,17 +48,20 @@
             });
         });
 
-        // 2. Safe Local Module Load for Pyodide
+        // 2. Safe Local Module Binding for Pyodide
         async function main() {
             const outputElement = document.getElementById("output");
             const runButton = document.getElementById("run-btn");
 
             try {
-                // This forces the browser to import the local file as an isolated module
+                // Dynamically import the local script file
                 const pyodideModule = await import("./pyodide.js");
                 
-                // Initialize using the module's exposed loader function
-                pyodide = await pyodideModule.loadPyodide({
+                // CRUCIAL FIX: Expose the loader function explicitly to the browser context
+                globalThis.loadPyodide = pyodideModule.loadPyodide;
+                
+                // Execute the initialization out of our current local folder
+                pyodide = await globalThis.loadPyodide({
                     indexURL: "./"
                 });
                 
@@ -65,7 +69,7 @@
                 runButton.disabled = false;
                 runButton.textContent = "Run Code";
             } catch (err) {
-                outputElement.textContent = `Local Load Error: ${err.message}\nTry running with standard web headers.`;
+                outputElement.textContent = `Local Load Error:\n${err.message}`;
                 console.error(err);
             }
         }
