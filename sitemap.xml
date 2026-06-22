@@ -46,4 +46,9 @@
     <loc>https://nickysukka72922.github.io/py</loc>
     <priority>0.80</priority>
   </url>
+  <!-- Ping Pong -->
+  <url>
+    <loc>https://nickysukka72922.github.io/pingpong</loc>
+    <priority>0.80</priority>
+  </url>
 </urlset>

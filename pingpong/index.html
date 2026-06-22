@@ -1,0 +1,563 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quantum Clash - Pong Edition</title>
+    <script src="https://unpkg.com/peerjs@1.5.4/dist/peerjs.min.js"></script>
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body { 
+            background-color: #0a0a0c; 
+            color: #f3f4f6; 
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: system-ui, -apple-system, sans-serif;
+            padding: 20px;
+        }
+        .container {
+            width: 100%;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        .game-card {
+            background: linear-gradient(145deg, #111115, #191921);
+            border: 1px solid #2a2a35;
+            border-radius: 1rem;
+            padding: 3rem;
+            text-align: center;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+        }
+        .row {
+            display: flex;
+            gap: 1.5rem;
+            margin-top: 2rem;
+        }
+        .col {
+            flex: 1;
+            min-width: 280px;
+        }
+        @media (max-width: 680px) {
+            .row { flex-direction: column; }
+        }
+        .inner-panel {
+            background-color: #1f1f29;
+            border: 1px solid #2d2d3d;
+            border-radius: 0.5rem;
+            padding: 1.5rem;
+            text-align: left;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            height: 100%;
+        }
+        .game-title {
+            font-weight: 800;
+            font-size: 2.5rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            background: linear-gradient(45deg, #ff5722, #00adb5);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 0.5rem;
+        }
+        .text-secondary { color: #9ca3af !important; font-size: 0.95rem; }
+        .text-white { color: #fff; margin-bottom: 0.5rem; }
+        
+        .highscore-badge {
+            background: #1f1f29;
+            border: 1px solid #ffadb5;
+            color: #ffadb5;
+            display: inline-block;
+            padding: 0.4rem 1rem;
+            border-radius: 2rem;
+            font-weight: bold;
+            font-size: 0.9rem;
+            margin-top: 0.75rem;
+            letter-spacing: 1px;
+        }
+
+        .btn-custom {
+            width: 100%;
+            padding: 0.75rem;
+            font-weight: bold;
+            text-transform: uppercase;
+            border: none;
+            border-radius: 0.375rem;
+            cursor: pointer;
+            transition: opacity 0.2s;
+            color: white;
+        }
+        .btn-custom:hover { opacity: 0.9; }
+        
+        .form-control {
+            width: 100%;
+            padding: 0.75rem;
+            background-color: #0f0f15;
+            color: white;
+            border: 1px solid #3b3b4f;
+            border-radius: 0.375rem;
+            text-align: center;
+            outline: none;
+        }
+        .form-control:focus { border-color: #00adb5; }
+
+        .input-group-custom {
+            display: flex;
+            width: 100%;
+        }
+        .code-display {
+            font-family: monospace;
+            background-color: #0f0f15;
+            color: #ff5722;
+            border: 1px dashed #444;
+            border-top-left-radius: 0.375rem;
+            border-bottom-left-radius: 0.375rem;
+            font-size: 1.25rem;
+            font-weight: bold;
+            flex-grow: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .btn-copy-style {
+            background-color: #2d2d3d;
+            border: 1px solid #444;
+            border-left: none;
+            color: white;
+            padding: 0 1.25rem;
+            border-top-right-radius: 0.375rem;
+            border-bottom-right-radius: 0.375rem;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: background-color 0.2s;
+        }
+        .btn-copy-style:hover { background-color: #3a3a4f; }
+        
+        .copy-icon {
+            width: 14px;
+            height: 18px;
+            border: 2px solid #fff;
+            border-radius: 2px;
+            position: relative;
+        }
+        .copy-icon::before {
+            content: '';
+            position: absolute;
+            top: -4px;
+            left: 2px;
+            width: 6px;
+            height: 3px;
+            background: #2d2d3d;
+            border: 1px solid #fff;
+            border-radius: 1px;
+        }
+
+        #game-canvas {
+            border: 4px solid #1f1f29;
+            background: #111115;
+            border-radius: 8px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.6);
+            max-width: 100%;
+        }
+
+        #end-screen {
+            background: rgba(10, 10, 12, 0.9);
+            border: 1px solid #2d2d3d;
+            border-radius: 1rem;
+            padding: 2.5rem;
+            max-width: 450px;
+            width: 100%;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.8);
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 10;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+
+    <div id="homepage" class="container">
+        <div class="game-card">
+            <h1 class="game-title">Quantum Clash</h1>
+            <p class="text-secondary">P2P Split-Authority Ping Pong Experiment.</p>
+            
+            <div id="highscore-wrapper">
+                <div class="highscore-badge">🏆 LIFETIME POINTS: <span id="highscore-val">0</span></div>
+            </div>
+
+            <div class="row">
+                <div class="col">
+                    <div class="inner-panel">
+                        <div>
+                            <h3 class="text-white">Host Match</h3>
+                            <p class="text-secondary" style="margin-bottom: 1.5rem;">Act as the primary server hub. Create a room ID and share it directly with your opponent.</p>
+                        </div>
+                        <div>
+                            <button id="btn-host" class="btn-custom" style="background-color: #ff5722;">Generate Room</button>
+                            
+                            <div id="host-status" style="display: none;">
+                                <label style="color: #ff5722; font-size: 0.8rem; font-weight: bold; text-transform: uppercase; display: block; margin-bottom: 0.25rem;">Your Room ID:</label>
+                                <div class="input-group-custom">
+                                    <div id="host-id-display" class="code-display">Generating...</div>
+                                    <button id="btn-copy" class="btn-copy-style" type="button" title="Copy to Clipboard">
+                                        <div class="copy-icon" id="icon-graphics"></div>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col">
+                    <div class="inner-panel">
+                        <div>
+                            <h3 class="text-white">Join Match</h3>
+                            <p class="text-secondary" style="margin-bottom: 1.5rem;">Connect directly to a friend's active session by entering their unique room ID key.</p>
+                        </div>
+                        <div>
+                            <input type="text" id="join-id" class="form-control" placeholder="Paste Room ID here..." maxlength="8" style="margin-bottom: 1rem;">
+                            <button id="btn-join" class="btn-custom" style="background-color: #00adb5;">Connect to Host</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="game-arena" class="container" style="display: none; text-align: center; margin-top: 2rem; position: relative;">
+        <div id="role-display" style="font-size: 1.5rem; color: #9ca3af; margin-bottom: 1.5rem;">Connecting to battle map...</div>
+        <canvas id="game-canvas" width="700" height="450"></canvas>
+
+        <div id="end-screen" style="display: none;">
+            <h2 id="end-title" style="font-size: 2.25rem; font-weight: 800; text-transform: uppercase; margin-bottom: 0.5rem;">YOU WIN</h2>
+            <p id="end-subtitle" class="text-secondary" style="margin-bottom: 0.25rem;">Final scoreboard details go here.</p>
+            <p id="end-highscore-notice" style="color: #ffbf00; font-weight: bold; margin-bottom: 2rem;">➕ POINTS BANKED TO CAREER TOTAL!</p>
+            <button id="btn-return-home" class="btn-custom" style="background-color: #2d2d3d; border: 1px solid #444;">Return to Main Menu</button>
+        </div>
+    </div>
+
+    <script>
+        const canvas = document.getElementById('game-canvas');
+        const ctx = canvas.getContext('2d');
+
+        let peer = null;
+        let conn = null;
+        let isHost = false;
+        let isGameOver = false;
+
+        const PADDLE_WIDTH = 12;
+        const PADDLE_HEIGHT = 80;
+        const BALL_SIZE = 10;
+        const MOVE_SPEED = 6.0;
+        const WINNING_SCORE = 10;
+
+        let gameState = {
+            hostPlayer: { x: 20, y: 185, score: 0, color: '#ff5722' },
+            guestPlayer: { x: 668, y: 185, score: 0, color: '#00adb5' },
+            ball: { x: 350, y: 225, vx: 4, vy: 2 }
+        };
+
+        let hostBallUpdate = null;
+        const keysPressed = {};
+        window.addEventListener('keydown', (e) => { keysPressed[e.key.toLowerCase()] = true; });
+        window.addEventListener('keyup', (e) => { keysPressed[e.key.toLowerCase()] = false; });
+
+        // Fetch running accumulation count
+        updateHighScoreDisplay();
+        gameLoop();
+
+        // --- BACKGROUND TICK WORKER BLOB ---
+        const workerCode = `
+            setInterval(() => {
+                postMessage('tick');
+            }, 1000 / 60);
+        `;
+        const blob = new Blob([workerCode], { type: 'application/javascript' });
+        const worker = new Worker(URL.createObjectURL(blob));
+
+        worker.onmessage = function() {
+            processGameTick();
+        };
+
+        function resetBall() {
+            gameState.ball.x = canvas.width / 2;
+            gameState.ball.y = canvas.height / 2;
+            gameState.ball.vx = (Math.random() > 0.5 ? 4 : -4);
+            gameState.ball.vy = (Math.random() * 4) - 2;
+        }
+
+        function updateHighScoreDisplay() {
+            const currentRecord = localStorage.getItem('pong_lifetime_score') || 0;
+            document.getElementById('highscore-val').innerText = currentRecord;
+        }
+
+        function processGameTick() {
+            if (!conn || !conn.open || isGameOver) return;
+
+            if (isHost) {
+                if (keysPressed['w']) gameState.hostPlayer.y -= MOVE_SPEED;
+                if (keysPressed['s']) gameState.hostPlayer.y += MOVE_SPEED;
+                gameState.hostPlayer.y = Math.max(10, Math.min(canvas.height - PADDLE_HEIGHT - 10, gameState.hostPlayer.y));
+                conn.send({ type: 'PADDLE_SHIFT', side: 'host', y: gameState.hostPlayer.y });
+            } else {
+                if (keysPressed['arrowup']) gameState.guestPlayer.y -= MOVE_SPEED;
+                if (keysPressed['arrowdown']) gameState.guestPlayer.y += MOVE_SPEED;
+                gameState.guestPlayer.y = Math.max(10, Math.min(canvas.height - PADDLE_HEIGHT - 10, gameState.guestPlayer.y));
+                conn.send({ type: 'PADDLE_SHIFT', side: 'guest', y: gameState.guestPlayer.y });
+            }
+
+            updateBallPhysics();
+
+            if (isHost) {
+                conn.send({
+                    type: 'BALL_SYNC_STREAM',
+                    x: gameState.ball.x,
+                    y: gameState.ball.y,
+                    vx: gameState.ball.vx,
+                    vy: gameState.ball.vy,
+                    hostScore: gameState.hostPlayer.score,
+                    guestScore: gameState.guestPlayer.score
+                });
+            } else {
+                if (hostBallUpdate) {
+                    gameState.ball.x += (hostBallUpdate.x - gameState.ball.x) * 0.35;
+                    gameState.ball.y += (hostBallUpdate.y - gameState.ball.y) * 0.35;
+                    
+                    if (Math.abs(gameState.ball.x - hostBallUpdate.x) > 30) {
+                        gameState.ball.x = hostBallUpdate.x;
+                        gameState.ball.y = hostBallUpdate.y;
+                    }
+                    gameState.ball.vx = hostBallUpdate.vx;
+                    gameState.ball.vy = hostBallUpdate.vy;
+                }
+            }
+        }
+
+        function updateBallPhysics() {
+            let ball = gameState.ball;
+            ball.x += ball.vx;
+            ball.y += ball.vy;
+
+            if (ball.y <= 10) {
+                ball.y = 10;
+                ball.vy = Math.abs(ball.vy);
+            } else if (ball.y >= canvas.height - 10 - BALL_SIZE) {
+                ball.y = canvas.height - 10 - BALL_SIZE;
+                ball.vy = -Math.abs(ball.vy);
+            }
+
+            if (ball.vx < 0 && 
+                ball.x <= gameState.hostPlayer.x + PADDLE_WIDTH && 
+                ball.x >= gameState.hostPlayer.x &&
+                ball.y + BALL_SIZE >= gameState.hostPlayer.y && 
+                ball.y <= gameState.hostPlayer.y + PADDLE_HEIGHT) {
+                
+                ball.vx = Math.abs(ball.vx) * 1.04;
+                let relativeHit = (ball.y + BALL_SIZE/2) - (gameState.hostPlayer.y + PADDLE_HEIGHT/2);
+                ball.vy = relativeHit * 0.15;
+            }
+
+            if (ball.vx > 0 && 
+                ball.x + BALL_SIZE >= gameState.guestPlayer.x && 
+                ball.x <= gameState.guestPlayer.x + PADDLE_WIDTH &&
+                ball.y + BALL_SIZE >= gameState.guestPlayer.y && 
+                ball.y <= gameState.guestPlayer.y + PADDLE_HEIGHT) {
+                
+                ball.vx = -Math.abs(ball.vx) * 1.04;
+                let relativeHit = (ball.y + BALL_SIZE/2) - (gameState.guestPlayer.y + PADDLE_HEIGHT/2);
+                ball.vy = relativeHit * 0.15;
+            }
+
+            if (isHost) {
+                if (ball.x < 0) {
+                    gameState.guestPlayer.score++;
+                    if (gameState.guestPlayer.score >= WINNING_SCORE) {
+                        triggerMatchEnd('guest');
+                    } else {
+                        resetBall();
+                    }
+                } else if (ball.x > canvas.width) {
+                    gameState.hostPlayer.score++;
+                    if (gameState.hostPlayer.score >= WINNING_SCORE) {
+                        triggerMatchEnd('host');
+                    } else {
+                        resetBall();
+                    }
+                }
+            }
+        }
+
+        // --- MATCH RESOLUTION SYSTEM (CUMULATIVE ADDITION) ---
+        function triggerMatchEnd(winningSide) {
+            isGameOver = true;
+            
+            if (isHost) {
+                conn.send({ type: 'MATCH_OVER_SIGNAL', winner: winningSide });
+            }
+
+            const titleEl = document.getElementById('end-title');
+            const subEl = document.getElementById('end-subtitle');
+            const noticeEl = document.getElementById('end-highscore-notice');
+
+            // Find how many points THIS window scored in the match
+            const pointsScoredThisMatch = isHost ? gameState.hostPlayer.score : gameState.guestPlayer.score;
+            
+            // Read old total -> Add new points -> Save back
+            const pastLifetimeTotal = parseInt(localStorage.getItem('pong_lifetime_score') || 0, 10);
+            const newLifetimeTotal = pastLifetimeTotal + pointsScoredThisMatch;
+            
+            localStorage.setItem('pong_lifetime_score', newLifetimeTotal);
+            updateHighScoreDisplay();
+
+            // Set notice text
+            noticeEl.innerText = `➕ BANKED +${pointsScoredThisMatch} POINTS TO YOUR LIFETIME TOTAL!`;
+
+            if ((isHost && winningSide === 'host') || (!isHost && winningSide === 'guest')) {
+                titleEl.innerText = "YOU WIN!";
+                titleEl.style.color = "#198754";
+            } else {
+                titleEl.innerText = "YOU LOSE";
+                titleEl.style.color = "#dc3545";
+            }
+
+            subEl.innerText = `Final Score: ${gameState.hostPlayer.score} - ${gameState.guestPlayer.score}`;
+            document.getElementById('end-screen').style.display = 'block';
+        }
+
+        document.getElementById('btn-return-home').addEventListener('click', () => {
+            if (conn) conn.close();
+            if (peer) peer.destroy();
+            
+            isGameOver = false;
+            gameState.hostPlayer.score = 0;
+            gameState.guestPlayer.score = 0;
+            gameState.hostPlayer.y = 185;
+            gameState.guestPlayer.y = 185;
+            resetBall();
+            hostBallUpdate = null;
+
+            document.getElementById('end-screen').style.display = 'none';
+            document.getElementById('game-arena').style.display = 'none';
+            document.getElementById('homepage').style.display = 'block';
+            
+            document.getElementById('btn-host').style.display = 'block';
+            document.getElementById('host-status').style.display = 'none';
+            document.getElementById('join-id').value = '';
+        });
+
+        function generateId() {
+            const chars = 'abcdefghijklmnopqrstuvwxyz0123456789';
+            let result = '';
+            for (let i = 0; i < 8; i++) {
+                result += chars.charAt(Math.floor(Math.random() * chars.length));
+            }
+            return result;
+        }
+
+        // --- HOST INITIALIZATION ---
+        document.getElementById('btn-host').addEventListener('click', () => {
+            isHost = true;
+            document.getElementById('btn-host').style.display = 'none';
+            document.getElementById('host-status').style.display = 'block';
+            
+            const customRoomId = generateId();
+            peer = new Peer(customRoomId);
+            peer.on('open', (id) => { document.getElementById('host-id-display').innerText = id; });
+            peer.on('connection', (connection) => {
+                conn = connection;
+                setupHostDataChannels();
+            });
+        });
+
+        document.getElementById('btn-copy').addEventListener('click', () => {
+            const textToCopy = document.getElementById('host-id-display').innerText;
+            navigator.clipboard.writeText(textToCopy).then(() => {
+                const copyBtn = document.getElementById('btn-copy');
+                copyBtn.style.backgroundColor = "#198754";
+                setTimeout(() => { copyBtn.style.backgroundColor = "#2d2d3d"; }, 1500);
+            });
+        });
+
+        function setupHostDataChannels() {
+            document.getElementById('homepage').style.display = 'none';
+            document.getElementById('game-arena').style.display = 'block';
+            document.getElementById('role-display').innerHTML = "Playing as <strong style='color:#ff5722;'>HOST (Red)</strong> — Controls: W, S";
+            
+            conn.on('data', (data) => {
+                if (data.type === 'PADDLE_SHIFT' && data.side === 'guest') {
+                    gameState.guestPlayer.y = data.y;
+                }
+            });
+        }
+
+        // --- GUEST INITIALIZATION ---
+        document.getElementById('btn-join').addEventListener('click', () => {
+            const hostId = document.getElementById('join-id').value.trim();
+            if (!hostId) return alert("Please enter a valid room key!");
+            isHost = false;
+            peer = new Peer();
+            peer.on('open', () => {
+                conn = peer.connect(hostId);
+                conn.on('open', () => {
+                    document.getElementById('homepage').style.display = 'none';
+                    document.getElementById('game-arena').style.display = 'block';
+                    document.getElementById('role-display').innerHTML = "Playing as <strong style='color:#00adb5;'>GUEST (Blue)</strong> — Controls: Up/Down Arrows";
+                });
+                conn.on('data', (data) => {
+                    if (data.type === 'PADDLE_SHIFT' && data.side === 'host') {
+                        gameState.hostPlayer.y = data.y;
+                    }
+                    if (data.type === 'BALL_SYNC_STREAM') {
+                        hostBallUpdate = data;
+                        gameState.hostPlayer.score = data.hostScore;
+                        gameState.guestPlayer.score = data.guestScore;
+                    }
+                    if (data.type === 'MATCH_OVER_SIGNAL') {
+                        triggerMatchEnd(data.winner);
+                    }
+                });
+            });
+        });
+
+        // --- CANVAS DRAWER ---
+        function gameLoop() {
+            ctx.fillStyle = '#111115';
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+            ctx.strokeStyle = 'rgba(255, 255, 255, 0.08)';
+            ctx.lineWidth = 4;
+            ctx.setLineDash([15, 15]);
+            ctx.beginPath();
+            ctx.moveTo(canvas.width / 2, 0);
+            ctx.lineTo(canvas.width / 2, canvas.height);
+            ctx.stroke();
+            ctx.setLineDash([]);
+
+            ctx.fillStyle = 'rgba(255, 255, 255, 0.2)';
+            ctx.font = 'bold 48px monospace';
+            ctx.textAlign = 'center';
+            ctx.fillText(gameState.hostPlayer.score, canvas.width / 2 - 70, 60);
+            ctx.fillText(gameState.guestPlayer.score, canvas.width / 2 + 70, 60);
+
+            ctx.fillStyle = gameState.hostPlayer.color;
+            ctx.fillRect(gameState.hostPlayer.x, gameState.hostPlayer.y, PADDLE_WIDTH, PADDLE_HEIGHT);
+            ctx.fillStyle = gameState.guestPlayer.color;
+            ctx.fillRect(gameState.guestPlayer.x, gameState.guestPlayer.y, PADDLE_WIDTH, PADDLE_HEIGHT);
+
+            ctx.fillStyle = '#ffffff';
+            ctx.fillRect(gameState.ball.x, gameState.ball.y, BALL_SIZE, BALL_SIZE);
+
+            requestAnimationFrame(gameLoop);
+        }
+    </script>
+</body>
+</html>
